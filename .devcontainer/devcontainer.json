@@ -8,9 +8,10 @@
 	// Run the container with some extra options
 	"runArgs": [
 		"--privileged",
+		"--name", "positron-dev",
 		"--net", "host",
-    "-e", "DISPLAY=${env:DISPLAY}",
-    "-v", "/tmp/.X11-unix:/tmp/.X11-unix"
+    "--env", "DISPLAY=${env:DISPLAY}",
+    "--volume", "/tmp/.X11-unix:/tmp/.X11-unix"
 	],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
