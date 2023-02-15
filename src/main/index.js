@@ -12,7 +12,6 @@ const createMainWindow = () => {
     // frame: false,
     width: 500,
     height: 300,
-    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.js'),
     },
@@ -21,13 +20,16 @@ const createMainWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // Hide the menu bar
+  mainWindow.setMenuBarVisibility(false)
 
   // Set the app title
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.setTitle('Positron');
   });
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools();
 
 };
 
