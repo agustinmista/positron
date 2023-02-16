@@ -1,8 +1,8 @@
 {
   "name": "positron",
-  "productName": "positron",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "Positron",
+  "version": "0.1.0",
+  "description": "The opposite of a good native app",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
-  "author": "agustin",
+  "author": "Agustín Mista",
   "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
