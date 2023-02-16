@@ -35,8 +35,4 @@ export NVM_DIR="$HOME/.nvm"
 nvm install --lts
 
 # Start dbus
-dbus-launch
-
-# Fix permissions of chrome-sandbox
-# sudo chown -f root:root /workspaces/positron/node_modules/electron/dist/chrome-sandbox
-# sudo chmod -f 4755 /workspaces/positron/node_modules/electron/dist/chrome-sandbox
+# dbus-launch
