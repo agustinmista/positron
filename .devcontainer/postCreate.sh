@@ -2,12 +2,22 @@
 
 set -e
 
-# Install Electron dependencies
+# Install system dependencies
 sudo apt update
-sudo apt install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgtk3.0-cil libgbm1 libasound2 wine64
-
-# Install dev environment
-npm install
+sudo apt install -y --no-install-recommends \
+  dpkg \
+  fakeroot \
+  libasound2 \
+  libatk-bridge2.0-0 \
+  libatk1.0-0 \
+  libcups2 \
+  libdrm2 \
+  libgbm1 \
+  libgtk3.0-cil \
+  libnss3 \
+  mono-complete \
+  rpm \
+  wine64
 
 # Fix permissions of chrome-sandbox
 # sudo chown -f root:root /workspaces/positron/node_modules/electron/dist/chrome-sandbox
