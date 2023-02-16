@@ -3,7 +3,7 @@ name: Build/release
 on: push
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,8 +20,8 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
-      - name: Build for {{ matrix.platform }}
-        run: npm run make -- --platform {{ matrix.platform }}
+      - name: Build for ${{ matrix.platform }}
+        run: npm run make -- --platform ${{ matrix.platform }}
 
         # with:
         #   github_token: ${{ secrets.github_token }}
