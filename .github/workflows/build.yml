@@ -29,9 +29,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1
         with:
-          artifacts:
-            - "out/make/deb/x64/*.deb"
-            - "out/make/rpm/x64/*.rpm"
-            - "out/make/squirrel.windows/x64/*.exe"
-            - "out/make/squirrel.windows/x64/*.nupkg"
-            - "out/make/darwin/x64/*.zip"
+          artifacts: |
+            out/make/deb/x64/*.deb
+            out/make/rpm/x64/*.rpm
+            out/make/squirrel.windows/x64/*.exe
+            out/make/squirrel.windows/x64/*.nupkg
+            out/make/darwin/x64/*.zip
