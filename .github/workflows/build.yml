@@ -3,12 +3,8 @@ name: Build/release
 on: push
 
 jobs:
-  build:
+  build-release:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        platform: [linux, win32, darwin]
 
     steps:
       - name: Check out Git repository
@@ -20,9 +16,22 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
-      - name: Build for ${{ matrix.platform }}
-        run: npm run make -- --platform ${{ matrix.platform }}
+      - name: Make (Linux)
+        run: npm run make -- --platform linux
 
-        # with:
-        #   github_token: ${{ secrets.github_token }}
-        #   release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Make (Windows)
+        run: npm run make -- --platform win32
+
+      - name: Make (macOS)
+        run: npm run make -- --platform darwin
+
+      - name: Create a release for new tags
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts:
+            - "out/make/deb/x64/*.deb"
+            - "out/make/rpm/x64/*.rpm"
+            - "out/make/squirrel.windows/x64/*.exe"
+            - "out/make/squirrel.windows/x64/*.nupkg"
+            - "out/make/darwin/x64/*.zip"
