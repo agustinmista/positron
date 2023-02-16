@@ -33,6 +33,3 @@ export NVM_DIR="$HOME/.nvm"
 
 # Install Node.js
 nvm install --lts
-
-# Start dbus
-# dbus-launch
