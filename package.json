@@ -1,6 +1,6 @@
 {
   "name": "positron",
-  "productName": "Positron",
+  "productName": "positron",
   "version": "0.1.0",
   "description": "The opposite of a good native app",
   "main": ".webpack/main",
