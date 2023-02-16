@@ -4,23 +4,25 @@ on: push
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [linux, win32, darwin]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Install system dependencies
+        run: ./scripts/setup.sh
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Build for {{ matrix.platform }}
+        run: npm run make -- --platform {{ matrix.platform }}
+
+        # with:
+        #   github_token: ${{ secrets.github_token }}
+        #   release: ${{ startsWith(github.ref, 'refs/tags/v') }}
