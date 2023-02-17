@@ -7,8 +7,14 @@
 </head>
 
 <body>
-  <h1 id="title">Hello World!</h1>
+  <h1>Hello World!</h1>
   <p>Welcome to your Electron application.</p>
+
+  <div x-data="{ count: 0 }">
+    <button x-on:click="count++">Increment</button>
+    <span x-text="count"></span>
+  </div>
+
 </body>
 
 </html>

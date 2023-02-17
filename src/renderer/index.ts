@@ -1,6 +1,10 @@
 import './index.css';
+import Alpine from 'alpinejs'
 
-console.log('Hello from the renderer process!');
+// Make the Alpine object available globally
+declare global {
+  interface Window { Alpine: typeof Alpine; }
+}
+window.Alpine = Alpine;
 
-const title = document.getElementById('title');
-title.onclick = () => alert('Hey!');
+Alpine.start();
