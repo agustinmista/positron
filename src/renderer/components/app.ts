@@ -38,7 +38,7 @@ export const app = {
 
   // Helper functions
 
-  createShortcut() {
+  async createShortcut() {
     const shortcut: Shortcut = {
       id: uuid(),
       name: 'New shortcut',
@@ -51,12 +51,14 @@ export const app = {
       }
     };
     this.shortcuts.push(shortcut);
+    await this.saveUserConfig();
   },
 
-  deleteShortcut(shortcut: Shortcut) {
+  async deleteShortcut(shortcut: Shortcut) {
     this.shortcuts = this.shortcuts.filter((elem: Shortcut) => {
       return elem.id !== shortcut.id;
     });
+    await this.saveUserConfig();
   },
 
   async toggleShortcut(shortcut: Shortcut) {
