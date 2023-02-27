@@ -120,8 +120,8 @@
           <label for="protocol">
             Protocol
             <select id="protocol" x-model="server.protocol">
-              <option value="http">http://</option>
-              <option value="https">https://</option>
+              <option value="http">HTTP</option>
+              <option value="https">HTTPS</option>
             </select>
           </label>
         </div>
@@ -167,7 +167,7 @@
       <footer>
         <div class="grid">
           <button @click="modals.settings.open=false" class="secondary">Close without saving</button>
-          <button @click="async () => { await saveUserConfig(); modals.settings.open=false; }" class="darkgreen">Save and Close</button>
+          <button @click="async () => { await saveUserConfig(); modals.settings.open=false; }" class="darkgreen">Save and close</button>
         </div>
       </footer>
     </article>
