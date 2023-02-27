@@ -1,0 +1,49 @@
+@import '@picocss/pico/css/pico.min.css';
+
+/* body {
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+} */
+
+body::-webkit-scrollbar{
+  display: none;
+}
+
+details {
+  border-bottom: none;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.bigger {
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+.darkred {
+  background-color: darkred;
+  border-color: darkred;
+}
+
+.darkgreen {
+  background-color: darkgreen;
+  border-color: darkgreen;
+}
+
+.grid-1-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: var(--spacing);
+  grid-row-gap: 0px;
+}
+
+.grid-1-4-1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.grid-1-4-2 {
+  grid-area: 1 / 2 / 2 / 5;
+}

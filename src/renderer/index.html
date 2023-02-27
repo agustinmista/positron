@@ -1,20 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html x-data="app" x-init="$nextTick(() => loadUserConfig())" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
-  <title>Hello World!</title>
+  <title>Positron</title>
 </head>
 
 <body>
-  <h1>Hello World!</h1>
-  <p>Welcome to your Electron application.</p>
+  <div class="container-fluid">
 
-  <div x-data="{ count: 0 }">
-    <button x-on:click="count++">Increment</button>
-    <span x-text="count"></span>
+    <!-- Top nav -->
+    <header>
+      <nav>
+        <ul>
+          <li><span class="bigger">Positron</span></li>
+        </ul>
+        <ul>
+          <li><button @click="modals.settings.open=true">Settings</button></li>
+          <li><button @click="modals.about.open=true">About</button></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="container">
+
+      <!-- Shortcuts -->
+
+      <template x-for="shortcut in shortcuts">
+        <article>
+          <details x-bind:open="shortcut.open">
+
+            <!-- Header -->
+            <summary>
+              <input type="checkbox" id="switch" name="switch" role="switch" @click="toggleShortcut(shortcut)" x-model="shortcut.enabled">
+              <span x-text="shortcut.name"></span>
+            </summary>
+            <br />
+
+            <!-- Name/Accelerator -->
+            <div class="grid">
+
+              <!-- Name -->
+              <label for="name">
+                Name
+                <input type="text" id="name" x-model="shortcut.name" x-bind:disabled="shortcut.enabled">
+              </label>
+
+              <!-- Accelerator -->
+              <label for="accelerator">
+                Accelerator
+                <input type="text" id="accelerator" x-model="shortcut.acc" x-bind:disabled="shortcut.enabled" x-bind:aria-invalid="shortcut.invalid">
+                <small x-show="shortcut.invalid">Accelerator is invalid or already in use</small>
+              </label>
+            </div>
+
+            <!-- Method/Endpoint -->
+            <div class="grid-1-4">
+
+              <!-- Method -->
+              <div class="grid-1-4-1">
+                <label for="method">
+                  Method
+                  <select id="method" x-model="shortcut.params.method" x-bind:disabled="shortcut.enabled">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                  </select>
+                </label>
+              </div>
+
+              <!-- Endpoint -->
+              <div class="grid-1-4-2">
+                <label for="endpoint">
+                  Endpoint
+                  <input type="text" id="endpoint" x-model="shortcut.params.endpoint" x-bind:disabled="shortcut.enabled">
+                </label>
+              </div>
+            </div>
+
+            <!-- Request body -->
+            <label for="request-body">
+              Request body
+              <input type="text" id="request-body" x-model="shortcut.params.body" x-bind:disabled="shortcut.enabled">
+            </label>
+            <br />
+
+            <!-- Trigger/Delete -->
+            <div class="grid">
+              <button @click="triggerShortcut(shortcut)">Trigger</button>
+              <button @click="deleteShortcut(shortcut)" class="darkred">Delete</button>
+            </div>
+
+          </details>
+        </article>
+      </template>
+
+      <!-- Create new shortcut -->
+      <button class="darkgreen" @click="createShortcut">New shortcut</button>
+    </main>
   </div>
 
+  <!-- Modals -->
+
+  <!-- Settings -->
+  <dialog open x-show="modals.settings.open" x-transition>
+    <article>
+      <header>
+        <span class="bigger">Settings</span>
+      </header>
+
+      <!-- Server settings -->
+      <h4>Server</h4>
+
+      <!-- Protocol/Host -->
+      <div class="grid-1-4">
+
+        <!-- Protocol -->
+        <div class="grid-1-4-1">
+          <label for="protocol">
+            Protocol
+            <select id="protocol" x-model="server.protocol">
+              <option value="http">http://</option>
+              <option value="https">https://</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Hostname -->
+        <div class="grid-1-4-2">
+          <label for="hostname">
+            Hostname
+            <input type="text" id="hostname" x-model="server.hostname">
+          </label>
+        </div>
+      </div>
+
+      <!-- Port -->
+      <label for="port">
+        Port
+        <input type="text" id="port" x-model="server.port">
+      </label>
+
+      <!-- Token -->
+      <label for="token">
+        Long-Lived Access Token
+        <input type="text" id="token" x-model="server.token">
+      </label>
+
+      <h4>Appearence</h4>
+
+      <label for="darkTheme">
+        Dark Theme
+        <input type="checkbox" id="switch" name="switch" role="switch" @click="toggleDarkTheme" x-model="darkTheme">
+      </label>
+      <br />
+
+      <!-- User data -->
+      <h4>Configuration file</h4>
+
+      <div class="grid">
+        <button @click="loadUserConfig">Reload</button>
+        <button @click="saveUserConfig">Save</button>
+        <button @click="openUserConfig">Open</button>
+      </div>
+
+      <footer>
+        <button @click="modals.settings.open=false" class="darkgreen">Close</button>
+      </footer>
+    </article>
+  </dialog>
+
+  <!-- About -->
+  <dialog open x-show="modals.about.open" x-transition>
+    <article>
+      <header>
+        <span class="bigger">About</span>
+      </header>
+      <p>Agustín Mista</p>
+      <footer>
+        <button @click="modals.about.open=false" class="darkgreen">Close</button>
+      </footer>
+    </article>
+  </dialog>
+
+  <!-- Response -->
+  <dialog open x-show="modals.response.open" x-transition>
+    <article>
+      <header>
+        <span class="bigger">Response</span>
+      </header>
+      <span x-html="modals.response.content"></span>
+      <footer>
+        <button @click="modals.response.open=false" class="darkgreen">Close</button>
+      </footer>
+    </article>
+  </dialog>
 </body>
 
 </html>

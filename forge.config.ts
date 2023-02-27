@@ -93,12 +93,10 @@ const config: ForgeConfig = {
       renderer: {
         config: rendererConfig,
         entryPoints: [{
-          name: 'positron',
-          preload: {
-            js: './src/preload/index.ts',
-          },
+          name: 'main_window',
+          preload: { js: './src/renderer/preload.ts' },
           html: './src/renderer/index.html',
-          js: './src/renderer/index.ts',
+          js: './src/renderer/index.ts'
         }],
       },
     }),
