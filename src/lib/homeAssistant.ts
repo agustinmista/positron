@@ -32,7 +32,7 @@ export const homeAssistantRequest = async (
 ): Promise<HomeAssistantResponseOk | HomeAssistantResponseError> => {
 
   // Build the request URL
-  const url = `${server.protocol}://${server.hostname}:${server.port}/api${params.endpoint}`;
+  const url = `${server.protocol}://${server.hostname}:${server.port}${params.endpoint}`;
 
   try {
 
