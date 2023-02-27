@@ -14,7 +14,6 @@
     "paths": { "*": [ "node_modules/*" ] }
   },
   "include": [
-    "src/**/*",
-    "types/**/*.d.ts"
+    "src/**/*"
   ]
 }
