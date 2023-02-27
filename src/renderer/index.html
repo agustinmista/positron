@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html x-data="app" x-init="$nextTick(() => loadUserConfig())" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
+<html x-data="app" x-init="$nextTick(async () => { await loadUserConfig() })" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
   <title>Positron</title>
 </head>
 
-<body>
+<body x-data="{modals: {settings: {open: false}, about: {open: false}, response: {open: false, content: ''}}}">
   <div class="container-fluid">
 
     <!-- Top nav -->
@@ -28,12 +28,12 @@
       <!-- Shortcuts -->
 
       <template x-for="shortcut in shortcuts">
-        <article>
-          <details x-bind:open="shortcut.open">
+        <article x-data="{open:false,ok:true}">
+          <details x-bind:open="open">
 
             <!-- Header -->
             <summary>
-              <input type="checkbox" id="switch" name="switch" role="switch" @click="toggleShortcut(shortcut)" x-model="shortcut.enabled">
+              <input type="checkbox" role="switch" @click="ok=await toggleShortcut(shortcut)" x-model="shortcut.enabled">
               <span x-text="shortcut.name"></span>
             </summary>
             <br />
@@ -50,8 +50,8 @@
               <!-- Accelerator -->
               <label for="accelerator">
                 Accelerator
-                <input type="text" id="accelerator" x-model="shortcut.acc" x-bind:disabled="shortcut.enabled" x-bind:aria-invalid="shortcut.invalid">
-                <small x-show="shortcut.invalid">Accelerator is invalid or already in use</small>
+                <input type="text" id="accelerator" x-model="shortcut.acc" x-bind:disabled="shortcut.enabled" x-bind:aria-invalid="!ok">
+                <small x-show="!ok">Accelerator is invalid or already in use</small>
               </label>
             </div>
 
@@ -87,7 +87,7 @@
 
             <!-- Trigger/Delete -->
             <div class="grid">
-              <button @click="triggerShortcut(shortcut)">Trigger</button>
+              <button @click="async () => { modals.response.content=await triggerShortcut(shortcut); modals.response.open=true; }">Trigger</button>
               <button @click="deleteShortcut(shortcut)" class="darkred">Delete</button>
             </div>
 
@@ -96,7 +96,7 @@
       </template>
 
       <!-- Create new shortcut -->
-      <button class="darkgreen" @click="createShortcut">New shortcut</button>
+      <button @click="createShortcut" class="darkgreen">New shortcut</button>
     </main>
   </div>
 
@@ -147,25 +147,28 @@
         <input type="text" id="token" x-model="server.token">
       </label>
 
+      <!-- Appearence settings -->
       <h4>Appearence</h4>
 
       <label for="darkTheme">
         Dark Theme
-        <input type="checkbox" id="switch" name="switch" role="switch" @click="toggleDarkTheme" x-model="darkTheme">
+        <input type="checkbox" role="switch" name="darkTheme" @click="toggleDarkTheme" x-model="darkTheme">
       </label>
       <br />
 
-      <!-- User data -->
+      <!-- User config file settings -->
       <h4>Configuration file</h4>
 
       <div class="grid">
         <button @click="loadUserConfig">Reload</button>
-        <button @click="saveUserConfig">Save</button>
         <button @click="openUserConfig">Open</button>
       </div>
 
       <footer>
-        <button @click="modals.settings.open=false" class="darkgreen">Close</button>
+        <div class="grid">
+          <button @click="modals.settings.open=false" class="secondary">Close without saving</button>
+          <button @click="async () => { await saveUserConfig(); modals.settings.open=false; }" class="darkgreen">Save and Close</button>
+        </div>
       </footer>
     </article>
   </dialog>

@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
-import { type UserConfig } from '.';
 import { type HomeAssistantServer, type HomeAssistantRequestParams } from '../lib/homeAssistant';
+import { type UserConfig } from './components/app';
 
 declare global {
   interface Window { api: typeof api }
