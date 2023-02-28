@@ -2,15 +2,16 @@ import { app, BrowserWindow } from 'electron';
 
 import { createMainWindow } from './window';
 
-// This allows TypeScript to pick up the magic constants that are auto-generated
-// by Forge's Webpack plugin that tells the Electron app where to look for the
-// Webpack-bundled app code (depending on whether you're running in development
-// or production).
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+// ----------------------------------------
+// Packaging stuff
+// ----------------------------------------
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 if (require('electron-squirrel-startup')) { app.quit(); }
+
+// ----------------------------------------
+// Event handlers
+// ----------------------------------------
 
 // Create a main window when Electron has finished initialization
 app.on('ready', (): void => {

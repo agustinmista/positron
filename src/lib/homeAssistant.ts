@@ -1,5 +1,9 @@
 import request from 'electron-request';
 
+// ----------------------------------------
+// Interfaces
+// ----------------------------------------
+
 export interface HomeAssistantServer {
   protocol: ('http' | 'https'),
   hostname: string,
@@ -25,7 +29,10 @@ export interface HomeAssistantResponseError {
   response?: undefined,
 }
 
-// Send a request to a Home Assistant server
+// ----------------------------------------
+// Making requests to HomeAssistant servers
+// ----------------------------------------
+
 export const homeAssistantRequest = async (
   server: HomeAssistantServer,
   params: HomeAssistantRequestParams

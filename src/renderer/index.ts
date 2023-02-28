@@ -3,6 +3,9 @@ import { app } from './components/app';
 
 import './css/style.css';
 
-// Initialize Alpine
+// ----------------------------------------
+// Alpine intitialization
+// ----------------------------------------
+
 alpine.data('app', () => app);
 alpine.start();

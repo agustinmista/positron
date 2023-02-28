@@ -3,9 +3,9 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { type HomeAssistantServer, type HomeAssistantRequestParams } from '../lib/homeAssistant';
 import { type UserConfig } from './components/app';
 
-declare global {
-  interface Window { api: typeof api }
-}
+// ----------------------------------------
+// IPC interface between main and renderer
+// ----------------------------------------
 
 export const api = {
   triggerRequest: async (server: HomeAssistantServer, params: HomeAssistantRequestParams) =>
@@ -25,3 +25,8 @@ export const api = {
 };
 
 contextBridge.exposeInMainWorld('api', api);
+
+// Declare the type of the API so TypeScript doesn't complain
+declare global {
+  interface Window { api: typeof api }
+}

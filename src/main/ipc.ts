@@ -3,6 +3,10 @@ import Store from 'electron-store';
 
 import { homeAssistantRequest } from "../lib/homeAssistant";
 
+// ----------------------------------------
+// IPC backend implementation
+// ----------------------------------------
+
 // Initialize the IPC event handlers for API exported to the renderer process
 export function initIPCHandlers(store: Store) {
 

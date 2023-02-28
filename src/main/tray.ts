@@ -3,7 +3,11 @@ import path from 'path';
 
 import icon from '../img/logo.ico';
 
-// A global main window object
+// ----------------------------------------
+// Tray icon
+// ----------------------------------------
+
+// A global tray icon object
 export var trayIcon: Tray;
 
 // Create the tray icon
