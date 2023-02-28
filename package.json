@@ -43,6 +43,7 @@
     "electron-request": "^1.8.2",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
+    "file-loader": "^6.2.0",
     "uuid": "^9.0.0"
   }
 }

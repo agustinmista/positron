@@ -1,12 +1,12 @@
-import { WebpackPlugin } from '@electron-forge/plugin-webpack';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import type { ModuleOptions, Configuration } from 'webpack';
-
 import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import type { ForgeConfig } from '@electron-forge/shared-types';
+
+import type { ModuleOptions, Configuration } from 'webpack';
+import { WebpackPlugin } from '@electron-forge/plugin-webpack';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 // ============================
 // Webpack configuration
@@ -16,30 +16,34 @@ import type { ForgeConfig } from '@electron-forge/shared-types';
 const rules: Required<ModuleOptions>['rules'] = [
   {
     test: /native_modules[/\\].+\.node$/,
-    use: 'node-loader',
+    use: 'node-loader'
   },
   {
     test: /[/\\]node_modules[/\\].+\.(m?js|node)$/,
     use: {
       loader: '@vercel/webpack-asset-relocator-loader',
       options: {
-        outputAssetBase: 'native_modules',
-      },
+        outputAssetBase: 'native_modules'
+      }
     },
     parser: {
       amd: false
-    },
+    }
   },
   {
     test: /\.tsx?$/,
     use: {
       loader: 'ts-loader',
       options: {
-        transpileOnly: true,
-      },
+        transpileOnly: true
+      }
     },
-    exclude: /(node_modules|\.webpack)/,
+    exclude: /(node_modules|\.webpack)/
   },
+  {
+    test: /\.(png|jpg|jpeg|svg|jpeg|gif|ico)$/i,
+    type: 'asset/resource'
+  }
 ];
 
 // Main Process
@@ -61,7 +65,7 @@ const rendererConfig: Configuration = {
       use: [
         { loader: 'style-loader' },
         { loader: 'css-loader' }
-      ],
+      ]
     })
   },
   resolve: {
@@ -97,10 +101,10 @@ const config: ForgeConfig = {
           preload: { js: './src/renderer/preload.ts' },
           html: './src/renderer/index.html',
           js: './src/renderer/index.ts'
-        }],
-      },
-    }),
-  ],
+        }]
+      }
+    })
+  ]
 };
 
 export default config;
