@@ -1,5 +1,7 @@
 import alpine from 'alpinejs';
+
 import App from './components/App';
+import Modal from './components/Modal';
 
 import './css/style.css';
 
@@ -12,5 +14,10 @@ import './css/style.css';
 // that Alpine knows how to instrument. Moreover, for this to work, the class
 // methods must be deconstructed and defined using the `function` keyword.
 
-alpine.data('app', () => { return Object.assign(new App()) });
+alpine.data('app', () => { return new App() });
+
+alpine.store('settingsModal', new Modal());
+alpine.store('aboutModal',    new Modal());
+alpine.store('responseModal', new Modal());
+
 alpine.start();

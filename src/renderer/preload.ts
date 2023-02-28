@@ -21,7 +21,9 @@ export const api = {
   loadUserConfig: async () =>
     await ipcRenderer.invoke('api/loadUserConfig'),
   openUserConfig: async () =>
-    await ipcRenderer.invoke('api/openUserConfig')
+    await ipcRenderer.invoke('api/openUserConfig'),
+  getAppVersion: async () =>
+    await ipcRenderer.invoke('api/getAppVersion')
 };
 
 contextBridge.exposeInMainWorld('api', api);

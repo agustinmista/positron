@@ -6,7 +6,7 @@
   <title>Positron</title>
 </head>
 
-<body x-data="{modals: {settings: {open: false}, about: {open: false}, response: {open: false, content: ''}}}">
+<body>
   <div class="container-fluid">
 
     <!-- Top nav -->
@@ -16,8 +16,8 @@
           <li><span class="bigger">Positron</span></li>
         </ul>
         <ul>
-          <li><button @click="modals.settings.open=true">Settings</button></li>
-          <li><button @click="modals.about.open=true">About</button></li>
+          <li><button @click="$store.settingsModal.open()">Settings</button></li>
+          <li><button @click="$store.aboutModal.open()">About</button></li>
         </ul>
       </nav>
     </header>
@@ -27,8 +27,8 @@
 
       <!-- Shortcuts -->
       <template x-for="shortcut in shortcuts">
-        <article x-data="{open:false,ok:true}">
-          <details x-bind:open="open">
+        <article x-data="{ok: true}">
+          <details>
 
             <!-- Header -->
             <summary>
@@ -86,7 +86,7 @@
 
             <!-- Trigger/Delete -->
             <div class="grid">
-              <button @click="async () => { modals.response.content=await triggerShortcut(shortcut); modals.response.open=true; }">Trigger</button>
+              <button @click="triggerShortcut(shortcut).then(content => $store.responseModal.open(content))">Trigger</button>
               <button @click="deleteShortcut(shortcut)" class="darkred">Delete</button>
             </div>
 
@@ -95,14 +95,14 @@
       </template>
 
       <!-- Create new shortcut -->
-      <button @click="createShortcut" class="darkgreen">New shortcut</button>
+      <button @click="createShortcut()" class="darkgreen">New shortcut</button>
     </main>
   </div>
 
   <!-- Modals -->
 
   <!-- Settings -->
-  <dialog open x-show="modals.settings.open" x-transition>
+  <dialog open x-show="$store.settingsModal.isOpen" x-transition>
     <article>
       <header>
         <span class="bigger">Settings</span>
@@ -151,7 +151,7 @@
 
       <label for="darkTheme">
         Dark Theme
-        <input type="checkbox" role="switch" name="darkTheme" @click="toggleDarkTheme" x-model="darkTheme">
+        <input type="checkbox" role="switch" name="darkTheme" @click="toggleDarkTheme()" x-model="darkTheme">
       </label>
       <br />
 
@@ -159,44 +159,53 @@
       <h4>Configuration file</h4>
 
       <div class="grid">
-        <button @click="initialize">Reload</button>
-        <button @click="openUserConfig">Open</button>
+        <button @click="initialize()">Reload</button>
+        <button @click="openUserConfig()">Open</button>
       </div>
+      <br />
+
+      <label for="autoSave">
+        Auto save
+        <input type="checkbox" role="switch" name="autoSave" @click="toggleAutoSave()" x-model="autoSave">
+      </label>
+      <small>Runs on shortcut creation, deletion and toggle</small>
 
       <footer>
-        <div class="grid">
-          <button @click="modals.settings.open=false" class="secondary">Close without saving</button>
-          <button @click="async () => { await saveUserConfig(); modals.settings.open=false; }" class="darkgreen">Save and close</button>
-        </div>
+        <a href="#" role="button" @click="$store.settingsModal.close()" class="secondary">Close without saving</a>
+        <a href="#" role="button" @click="saveUserConfig().then($store.settingsModal.close())" class="darkgreen">Save and close</a>
       </footer>
     </article>
   </dialog>
 
   <!-- About -->
-  <dialog open x-show="modals.about.open" x-transition>
+  <dialog open x-show="$store.aboutModal.isOpen" x-transition>
     <article>
       <header>
         <span class="bigger">About</span>
       </header>
-      <p>Agustín Mista</p>
+      <p>Positron <span x-text="getAppVersion"></span></p>
+      <p>Create keyboard shortcuts for Home Assistant actions.</p>
+      <p>For more information about this application contact:</p>
+      <p>Agustín Mista (agustin@mista.me)</p>
       <footer>
-        <button @click="modals.about.open=false" class="darkgreen">Close</button>
+        <a href="#" role="button" @click="$store.aboutModal.close()" class="darkgreen">Close</a>
       </footer>
     </article>
   </dialog>
 
   <!-- Response -->
-  <dialog open x-show="modals.response.open" x-transition>
+  <dialog open x-show="$store.responseModal.isOpen" x-transition>
     <article>
       <header>
         <span class="bigger">Response</span>
       </header>
-      <span x-html="modals.response.content"></span>
+      <span x-html="$store.responseModal.data"></span>
       <footer>
-        <button @click="modals.response.open=false" class="darkgreen">Close</button>
+        <a href="#" role="button" @click="$store.responseModal.close()" class="darkgreen">Close</a>
       </footer>
     </article>
   </dialog>
+
 </body>
 
 </html>

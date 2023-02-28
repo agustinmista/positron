@@ -18,13 +18,16 @@ export interface Shortcut {
 export interface UserConfig {
   server: HomeAssistantServer,
   shortcuts: [Shortcut],
-  darkTheme: boolean
+  darkTheme: boolean,
+  autoSave: boolean
 }
 
 
 // ----------------------------------------
-// The main app component
+// The main App component class
 // ----------------------------------------
+
+// Keeps track of the changes in the application's business logic.
 
 export default class App {
 
@@ -157,7 +160,8 @@ export default class App {
     await window.api.saveUserConfig({
       server: clone(this.server),
       shortcuts: clone(this.shortcuts),
-      darkTheme: clone(this.darkTheme)
+      darkTheme: clone(this.darkTheme),
+      autoSave: clone(this.autoSave)
     });
   }
 
@@ -174,9 +178,19 @@ export default class App {
     await window.api.openUserConfig();
   }
 
-  // Toggle dark mode
+  // Toggle preferences
+
   toggleDarkTheme = function (): void {
     this.darkTheme = !this.darkTheme;
+  }
+
+  toggleAutoSave = function (): void {
+    this.autoSave = !this.autoSave;
+  }
+
+  getAppVersion = async function (): Promise<string> {
+    const version = await window.api.getAppVersion();
+    return version;
   }
 
 };

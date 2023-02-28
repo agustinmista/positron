@@ -27,8 +27,8 @@ export function createMainWindow() {
 
   // Create a new browser window
   mainWindow = new BrowserWindow({
-    height: 1200,
-    width: 800,
+    height: 1000,
+    width: 600,
     webPreferences: {
       contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
@@ -48,7 +48,7 @@ export function createMainWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // Open the DevTools
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Create the tray icon
   createTrayIcon(mainWindow);

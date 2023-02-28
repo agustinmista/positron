@@ -1,4 +1,4 @@
-import { ipcMain, globalShortcut } from "electron";
+import { ipcMain, globalShortcut, app } from "electron";
 import Store from 'electron-store';
 
 import { homeAssistantRequest } from "../lib/homeAssistant";
@@ -57,6 +57,11 @@ export function initIPCHandlers(store: Store) {
   ipcMain.handle('api/openUserConfig', (_event) => {
     console.log('HANDLING api/openUserConfig');
     store.openInEditor();
+  });
+
+  ipcMain.handle('api/getAppVersion', (_event) => {
+    console.log('HANDLING api/getAppVersion');
+    return app.getVersion();
   });
 
 }

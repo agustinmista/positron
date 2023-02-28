@@ -1,7 +1,12 @@
 @import '@picocss/pico/css/pico.min.css';
 
+
 body::-webkit-scrollbar{
   display: none;
+}
+
+body{
+  user-select: none;
 }
 
 details {
