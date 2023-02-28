@@ -1,5 +1,5 @@
 import alpine from 'alpinejs';
-import { app } from './components/app';
+import App from './components/App';
 
 import './css/style.css';
 
@@ -7,5 +7,5 @@ import './css/style.css';
 // Alpine intitialization
 // ----------------------------------------
 
-alpine.data('app', () => app);
+alpine.data('app', () => { return Object.assign(new App()) });
 alpine.start();

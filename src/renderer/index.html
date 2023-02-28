@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html x-data="app" x-init="$nextTick(async () => { await loadUserConfig() })" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
+<html x-data="app" x-cloak x-init="initialize" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
@@ -26,7 +26,6 @@
     <main class="container">
 
       <!-- Shortcuts -->
-
       <template x-for="shortcut in shortcuts">
         <article x-data="{open:false,ok:true}">
           <details x-bind:open="open">

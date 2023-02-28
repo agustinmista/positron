@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 import { type HomeAssistantServer, type HomeAssistantRequestParams } from '../lib/homeAssistant';
-import { type UserConfig } from './components/app';
+import { type UserConfig } from './components/App';
 
 // ----------------------------------------
 // IPC interface between main and renderer
