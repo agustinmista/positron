@@ -32,7 +32,7 @@
 
             <!-- Header -->
             <summary>
-              <input type="checkbox" role="switch" @click="ok=await toggleShortcut(shortcut)" x-model="shortcut.enabled">
+              <input type="checkbox" role="switch" @click="ok=await toggleShortcut(shortcut)" x-model="shortcut.enabled" x-bind:aria-invalid="!ok">
               <span x-text="shortcut.name"></span>
             </summary>
             <br />
@@ -159,7 +159,7 @@
       <h4>Configuration file</h4>
 
       <div class="grid">
-        <button @click="loadUserConfig">Reload</button>
+        <button @click="initialize">Reload</button>
         <button @click="openUserConfig">Open</button>
       </div>
 
