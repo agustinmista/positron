@@ -63,6 +63,7 @@ export default class App {
     // Try to reinitialize any previously enabled shortcut
     this.shortcuts.forEach(async (shortcut: Shortcut) => {
       if (shortcut.enabled) {
+        await this.disableShortcut(shortcut); // Needed in case the app is already running
         await this.enableShortcut(shortcut);
       }
     });
