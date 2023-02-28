@@ -2,7 +2,7 @@ import { BrowserWindow } from "electron";
 import Store from 'electron-store';
 
 import { initIPCHandlers } from "./ipc";
-import { createTrayIcon, trayIcon } from './tray'
+import { createTrayIcon } from './tray'
 
 // ----------------------------------------
 // Packaging stuff
@@ -47,8 +47,10 @@ export function createMainWindow() {
   // Hide the menu bar
   mainWindow.setMenuBarVisibility(false);
 
-  // Open the DevTools
-  mainWindow.webContents.openDevTools();
+  // Open the DevTools if we are in dev mode
+  if (process.env.NODE_ENV === 'development'){
+    mainWindow.webContents.openDevTools();
+  }
 
   // Create the tray icon
   createTrayIcon(mainWindow);
