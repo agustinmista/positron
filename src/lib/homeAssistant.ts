@@ -17,16 +17,9 @@ export interface HomeAssistantRequestParams {
   body?: string
 }
 
-export interface HomeAssistantResponseOk {
+export interface HomeAssistantResponse {
   ok: boolean,
-  response: string,
-  error?: undefined,
-}
-
-export interface HomeAssistantResponseError {
-  ok: boolean,
-  error: string,
-  response?: undefined,
+  body: string,
 }
 
 // ----------------------------------------
@@ -36,7 +29,7 @@ export interface HomeAssistantResponseError {
 export const homeAssistantRequest = async (
   server: HomeAssistantServer,
   params: HomeAssistantRequestParams
-): Promise<HomeAssistantResponseOk | HomeAssistantResponseError> => {
+): Promise<HomeAssistantResponse> => {
 
   // Build the request URL
   const url = `${server.protocol}://${server.hostname}:${server.port}${params.endpoint}`;
@@ -57,12 +50,12 @@ export const homeAssistantRequest = async (
     const responseBody = await response.text();
 
     // Return ok!
-    return { ok: response.ok, response: responseBody };
+    return { ok: response.ok, body: responseBody };
 
   } catch (error) {
 
     // Return error if something fails
-    return { ok: false, error: error.message };
+    return { ok: false, body: error.message };
   }
 }
 

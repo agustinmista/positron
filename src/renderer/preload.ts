@@ -8,10 +8,10 @@ import { type UserConfig } from './components/App';
 // ----------------------------------------
 
 export const api = {
-  triggerRequest: async (server: HomeAssistantServer, params: HomeAssistantRequestParams) =>
-    await ipcRenderer.invoke('api/triggerRequest', server, params),
-  registerShortcut: async (acc: string, server: HomeAssistantServer, params: HomeAssistantRequestParams) =>
-    await ipcRenderer.invoke('api/registerShortcut', acc, server, params),
+  triggerRequest: async (server: HomeAssistantServer, params: HomeAssistantRequestParams, handler: string) =>
+    await ipcRenderer.invoke('api/triggerRequest', server, params, handler),
+  registerShortcut: async (acc: string, server: HomeAssistantServer, params: HomeAssistantRequestParams, handler: string) =>
+    await ipcRenderer.invoke('api/registerShortcut', acc, server, params, handler),
   unregisterShortcut: async (acc: string) =>
     await ipcRenderer.invoke('api/unregisterShortcut', acc),
   isShortcutRegistered: async (acc: string) =>

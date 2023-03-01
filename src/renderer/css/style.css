@@ -1,11 +1,11 @@
 @import '@picocss/pico/css/pico.min.css';
 
 
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   display: none;
 }
 
-body{
+body {
   user-select: none;
 }
 
@@ -13,6 +13,10 @@ details {
   border-bottom: none;
   margin-bottom: 0px;
   padding-bottom: 0px;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .bigger {

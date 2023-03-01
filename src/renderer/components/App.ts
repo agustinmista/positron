@@ -11,7 +11,8 @@ export interface Shortcut {
   name: string,
   acc: string,
   enabled: boolean,
-  params: HomeAssistantRequestParams
+  params: HomeAssistantRequestParams,
+  handler: { enabled: boolean, code: string }
 }
 
 // User configuration (saved to disk)
@@ -58,7 +59,7 @@ export default class App {
   // Public methods
 
   // Read the user config file and initialize the app state
-  initialize = async function(): Promise<void> {
+  initialize = async function (): Promise<void> {
 
     // Read the user config from the config file
     await this.loadUserConfig();
@@ -80,11 +81,8 @@ export default class App {
       name: 'New shortcut',
       acc: '',
       enabled: false,
-      params: {
-        method: 'POST',
-        endpoint: '',
-        body: ''
-      }
+      params: { method: 'POST', endpoint: '', body: '' },
+      handler: { enabled: false, code: `response => response.ok ? 'All good chief' : 'There was an error:' + response.body` }
     });
 
     if (this.autoSave) {
@@ -112,7 +110,8 @@ export default class App {
     shortcut.enabled = await window.api.registerShortcut(
       shortcut.acc,
       clone(this.server),
-      clone(shortcut.params)
+      clone(shortcut.params),
+      clone(shortcut.handler.enabled ? shortcut.handler.code : null)
     );
 
     return shortcut.enabled;
@@ -150,9 +149,15 @@ export default class App {
   triggerShortcut = async function (shortcut: Shortcut): Promise<string> {
     const response = await window.api.triggerRequest(
       clone(this.server),
-      clone(shortcut.params)
+      clone(shortcut.params),
+      clone(shortcut.handler.enabled ? shortcut.handler.code : null)
     );
-    return JSON.stringify(response);
+    return response;
+  }
+
+  // Toggle a custom shortcut handler
+  toggleShortcutHandler = function (shortcut: Shortcut): void {
+    shortcut.handler.enabled = !shortcut.handler.enabled;
   }
 
   // Save the user config to the config file

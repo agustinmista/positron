@@ -1,7 +1,7 @@
-import { ipcMain, globalShortcut, app } from "electron";
+import { ipcMain, globalShortcut, app, Notification } from "electron";
 import Store from 'electron-store';
 
-import { homeAssistantRequest } from "../lib/homeAssistant";
+import { homeAssistantRequest, type HomeAssistantRequestParams, type HomeAssistantResponse, type HomeAssistantServer } from "../lib/homeAssistant";
 
 // ----------------------------------------
 // IPC backend implementation
@@ -10,23 +10,18 @@ import { homeAssistantRequest } from "../lib/homeAssistant";
 // Initialize the IPC event handlers for API exported to the renderer process
 export function initIPCHandlers(store: Store) {
 
-  ipcMain.handle('api/triggerRequest', async (_event, server, params) => {
+  ipcMain.handle('api/triggerRequest', async (_event, server, params, handler = null): Promise<string> => {
     console.log('HANDLING api/triggerRequest');
-    console.log(`REQUESTING: ${JSON.stringify(params)}`);
-    console.log(`FROM: ${JSON.stringify(server)}`);
-    const response = await homeAssistantRequest(server, params);
-    console.log(`REQUEST RESPONSE: ${JSON.stringify(response)}`);
+    const response = await handleShortcutRequest(server, params, handler);
     return response;
   });
 
-  ipcMain.handle('api/registerShortcut', (_event, acc, server, params) => {
+  ipcMain.handle('api/registerShortcut', (_event, acc, server, params, handler) => {
     console.log(`HANDLING api/registerShortcut (${acc})`);
     try {
       const registered = globalShortcut.register(acc, async () => {
         console.log(`TRIGGERED: ${acc}`);
-        const response = await homeAssistantRequest(server, params);
-        console.log(`REQUEST RESPONSE: ${JSON.stringify(response)}`);
-        return response;
+        await handleShortcutRequest(server, params, handler);
       });
       return registered;
     } catch (_error) {
@@ -64,4 +59,51 @@ export function initIPCHandlers(store: Store) {
     return app.getVersion();
   });
 
+}
+
+// ----------------------------------------
+// Helpers
+// ----------------------------------------
+
+async function handleShortcutRequest(server: HomeAssistantServer, params: HomeAssistantRequestParams, handler: string): Promise<string> {
+  const response = await makeRequest(server, params);
+  if (handler) {
+    const customResponse = runResponseHandler(handler, response);
+    sendNotification(customResponse);
+    return customResponse;
+  } else {
+    const jsonResponse = JSON.stringify(response);
+    // sendNotification(jsonResponse); // Maybe a good idea too
+    return jsonResponse;
+  }
+}
+
+// Make a request to the HomeAssistant server
+async function makeRequest(server: HomeAssistantServer, params: HomeAssistantRequestParams): Promise<HomeAssistantResponse> {
+  console.log(`REQUESTING: ${JSON.stringify(params)}`);
+  console.log(`FROM: ${JSON.stringify(server)}`);
+  const response = await homeAssistantRequest(server, params);
+  console.log(`RESPONSE: ${JSON.stringify(response)}`);
+  return response;
+}
+
+// Run a custom response handler
+function runResponseHandler(handler: string, response: HomeAssistantResponse): string {
+  console.log(`RUNNING HANDLER CODE: ${handler}`);
+  try {
+    const handlerFunction = eval(handler); // Right here officer!
+    const customResponse = handlerFunction(response);
+    console.log(`CUSTOM HANDLER OUTPUT: ${customResponse}`);
+    return customResponse;
+  } catch (error) {
+    console.log(`CUSTOM HANDLER FAILED: ${error.message}`);
+    const errorResponse = `Custom response handler failed: ${error.message}`;
+    return errorResponse;
+  }
+}
+
+// Send a new notification
+function sendNotification(message: string): void {
+  console.log(`SENDING NOTIFICATION: ${message}`);
+  new Notification({ title: 'Positron', body: message }).show();
 }

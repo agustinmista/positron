@@ -82,6 +82,14 @@
               Request body
               <input type="text" id="request-body" x-model="shortcut.params.body" x-bind:disabled="shortcut.enabled">
             </label>
+
+            <!-- Custom handler -->
+            <label for="custom-handler">
+              <input type="checkbox" role="switch" @click="toggleShortcutHandler(shortcut)" x-model="shortcut.handler.enabled" x-bind:disabled="shortcut.enabled">
+              Send custom notification
+              <!-- <input type="text" id="custom-handler" x-model="shortcut.handler.code" x-bind:disabled="shortcut.enabled"> -->
+              <textarea id="custom-handler" x-show="shortcut.handler.enabled" x-model="shortcut.handler.code" x-bind:disabled="shortcut.enabled"></textarea>
+            </label>
             <br />
 
             <!-- Trigger/Delete -->
@@ -142,7 +150,7 @@
 
       <!-- Token -->
       <label for="token">
-        Long-Lived Access Token
+        Long-lived access token
         <input type="text" id="token" x-model="server.token">
       </label>
 
@@ -150,7 +158,7 @@
       <h4>Appearence</h4>
 
       <label for="darkTheme">
-        Dark Theme
+        Dark theme
         <input type="checkbox" role="switch" name="darkTheme" @click="toggleDarkTheme()" x-model="darkTheme">
       </label>
       <br />
@@ -165,7 +173,7 @@
       <br />
 
       <label for="autoSave">
-        Auto Save
+        Auto save
         <input type="checkbox" role="switch" name="autoSave" @click="toggleAutoSave()" x-model="autoSave">
       </label>
       <small>Runs on shortcut creation, deletion and toggle</small>
