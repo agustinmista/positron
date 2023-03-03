@@ -1,5 +1,6 @@
 import { ipcMain, globalShortcut, app, Notification } from "electron";
 import Store from 'electron-store';
+import vm from 'vm';
 
 import { homeAssistantRequest, type HomeAssistantRequestParams, type HomeAssistantResponse, type HomeAssistantServer } from "../lib/homeAssistant";
 
@@ -10,7 +11,7 @@ import { homeAssistantRequest, type HomeAssistantRequestParams, type HomeAssista
 // Initialize the IPC event handlers for API exported to the renderer process
 export function initIPCHandlers(store: Store) {
 
-  ipcMain.handle('api/triggerRequest', async (_event, server, params, handler = null): Promise<string> => {
+  ipcMain.handle('api/triggerRequest', async (_event, server, params, handler = null) => {
     console.log('HANDLING api/triggerRequest');
     const response = await handleShortcutRequest(server, params, handler);
     return response;
@@ -91,7 +92,7 @@ async function makeRequest(server: HomeAssistantServer, params: HomeAssistantReq
 function runResponseHandler(handler: string, response: HomeAssistantResponse): string {
   console.log(`RUNNING HANDLER CODE: ${handler}`);
   try {
-    const handlerFunction = eval(handler); // Right here officer!
+    const handlerFunction = evalCustomFunction(handler);
     const customResponse = handlerFunction(response);
     console.log(`CUSTOM HANDLER OUTPUT: ${customResponse}`);
     return customResponse;
@@ -107,3 +108,12 @@ function sendNotification(message: string): void {
   console.log(`SENDING NOTIFICATION: ${message}`);
   new Notification({ body: message }).show();
 }
+
+// Run a custom function string in an isolated context
+function evalCustomFunction(code: string): ((response: HomeAssistantResponse) => string) {
+  const ctx = {}; // We might want to add extra capabilities in the future
+  vm.createContext(ctx);
+  const fun = vm.runInContext(code, ctx);
+  return fun;
+}
+
