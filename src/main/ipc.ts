@@ -105,5 +105,5 @@ function runResponseHandler(handler: string, response: HomeAssistantResponse): s
 // Send a new notification
 function sendNotification(message: string): void {
   console.log(`SENDING NOTIFICATION: ${message}`);
-  new Notification({ title: 'Positron', body: message }).show();
+  new Notification({ body: message }).show();
 }

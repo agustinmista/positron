@@ -17,6 +17,7 @@ details {
 
 textarea {
   resize: vertical;
+  font-family: monospace;
 }
 
 .bigger {
