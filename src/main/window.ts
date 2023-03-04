@@ -30,6 +30,7 @@ export function createMainWindow() {
     height: 1000,
     width: 600,
     webPreferences: {
+      zoomFactor: 0.8,
       contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     },
@@ -48,7 +49,7 @@ export function createMainWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // Open the DevTools if we are in dev mode
-  if (process.env.NODE_ENV === 'development'){
+  if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
   }
 
