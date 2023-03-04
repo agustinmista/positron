@@ -1,8 +1,8 @@
 {
-  "name": "positron",
-  "productName": "positron",
-  "version": "0.1.4",
-  "description": "Create keyboard shortcuts for Home Assistant actions",
+  "name": "Positron",
+  "productName": "Positron",
+  "version": "0.1.5",
+  "description": "Create keyboard shortcuts for HomeAssistant actions",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
