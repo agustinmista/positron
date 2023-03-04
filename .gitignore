@@ -89,3 +89,4 @@ typings/
 out/
 
 example.sh
+config.json
