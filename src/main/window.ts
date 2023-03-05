@@ -4,6 +4,8 @@ import Store from 'electron-store';
 import { initIPCHandlers } from "./ipc";
 import { createTrayIcon } from './tray'
 
+import icon from '../img/icons/icon.png';
+
 // ----------------------------------------
 // Packaging stuff
 // ----------------------------------------
@@ -27,6 +29,7 @@ export function createMainWindow() {
 
   // Create a new browser window
   mainWindow = new BrowserWindow({
+    icon: icon,
     height: 1000,
     width: 600,
     webPreferences: {

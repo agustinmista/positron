@@ -1,12 +1,14 @@
+import path from 'path';
+
 import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import type { ForgeConfig } from '@electron-forge/shared-types';
 
-import type { ModuleOptions, Configuration } from 'webpack';
 import { WebpackPlugin } from '@electron-forge/plugin-webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import type { ModuleOptions, Configuration } from 'webpack';
 
 // ============================
 // Webpack configuration
@@ -83,12 +85,25 @@ const rendererConfig: Configuration = {
 // ============================
 
 const config: ForgeConfig = {
-  packagerConfig: {},
+  packagerConfig: {
+    executableName: 'positron',
+    icon: path.join(__dirname, 'src/img/icons/icon')
+  },
   rebuildConfig: {},
   makers: [
-    new MakerDeb({}),
-    new MakerRpm({}),
-    new MakerSquirrel({}),
+    new MakerDeb({
+      options: {
+        icon: path.join(__dirname, 'src/img/icons/icon.png')
+      }
+    }),
+    new MakerRpm({
+      options: {
+        icon: path.join(__dirname, 'src/img/icons/icon.png')
+      }
+    }),
+    new MakerSquirrel({
+      setupIcon: path.join(__dirname, 'src/img/icons/icon.ico')
+    }),
     new MakerZIP({}, ['darwin'])
   ],
   plugins: [

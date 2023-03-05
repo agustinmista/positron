@@ -1,7 +1,7 @@
 import { app, Tray, Menu, BrowserWindow } from "electron";
 import path from 'path';
 
-import icon from '../img/logo.ico';
+import icon from '../img/icons/icon.png';
 
 // ----------------------------------------
 // Tray icon
