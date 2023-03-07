@@ -81,8 +81,39 @@ export default class App {
       name: 'New shortcut',
       acc: '',
       enabled: false,
-      params: { method: 'POST', endpoint: '', body: '' },
-      handler: { enabled: false, code: `response => response.ok ? 'All good chief' : 'There was an error:' + response.body` }
+      params: {
+        method: 'POST',
+        endpoint: '',
+        body: ''
+      },
+      handler: {
+        enabled: false,
+        code: `response => response.ok ? 'All good chief' : 'There was an error:' + response.body`
+      }
+    });
+
+    if (this.autoSave) {
+      await this.saveUserConfig();
+    }
+  }
+
+  // Duplicate a given shortcut
+  duplicateShortcut = async function (shortcut: Shortcut): Promise<void> {
+
+    this.shortcuts.push({
+      id: uuid(),
+      name: `${shortcut.name} (copy)`,
+      acc: '',
+      enabled: false,
+      params: {
+        method: shortcut.params.method,
+        endpoint: shortcut.params.endpoint,
+        body: shortcut.params.body
+      },
+      handler: {
+        enabled: shortcut.handler.enabled,
+        code: shortcut.handler.code
+      }
     });
 
     if (this.autoSave) {

@@ -92,9 +92,10 @@
             </label>
             <br />
 
-            <!-- Trigger/Delete -->
+            <!-- Trigger/Duplicate/Delete -->
             <div class="grid">
               <button @click="triggerShortcut(shortcut).then(content => $store.responseModal.open(content))">Trigger</button>
+              <button @click="duplicateShortcut(shortcut)">Duplicate</button>
               <button @click="deleteShortcut(shortcut)" class="darkred">Delete</button>
             </div>
 
