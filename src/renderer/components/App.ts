@@ -124,9 +124,7 @@ export default class App {
   // Create a new shortcut
   deleteShortcut = async function (shortcut: Shortcut): Promise<void> {
 
-    this.shortcuts = this.shortcuts.filter((elem: Shortcut) => {
-      return elem.id !== shortcut.id;
-    });
+    this.shortcuts = this.shortcuts.filter((elem: Shortcut) => elem.id !== shortcut.id);
 
     if (this.autoSave) {
       await this.saveUserConfig();

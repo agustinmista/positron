@@ -26,7 +26,7 @@
     <main class="container">
 
       <!-- Shortcuts -->
-      <template x-for="shortcut in shortcuts">
+      <template x-for="shortcut in shortcuts" :key="shortcut.id">
         <article x-data="{ok: true}">
           <details>
 
@@ -87,7 +87,6 @@
             <label for="custom-handler">
               <input type="checkbox" role="switch" @click="toggleShortcutHandler(shortcut)" x-model="shortcut.handler.enabled" x-bind:disabled="shortcut.enabled">
               Send custom notification
-              <!-- <input type="text" id="custom-handler" x-model="shortcut.handler.code" x-bind:disabled="shortcut.enabled"> -->
               <textarea id="custom-handler" rows="3" x-show="shortcut.handler.enabled" x-model="shortcut.handler.code" x-bind:disabled="shortcut.enabled"></textarea>
             </label>
             <br />
