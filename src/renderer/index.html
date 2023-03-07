@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html x-data="app" x-cloak x-init="initialize" x-bind:data-theme="darkTheme ? 'dark' : 'light'">
+<html
+  x-data="app"
+  x-cloak
+  x-init="initialize"
+  x-bind:data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
@@ -16,8 +20,16 @@
           <li><span class="bigger">Positron</span></li>
         </ul>
         <ul>
-          <li><button @click="$store.settingsModal.open()">Settings</button></li>
-          <li><button @click="$store.aboutModal.open()">About</button></li>
+          <li>
+            <button @click="$store.settingsModal.open()">
+              Settings
+            </button>
+          </li>
+          <li>
+            <button @click="$store.aboutModal.open()">
+              About
+            </button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -32,7 +44,12 @@
 
             <!-- Header -->
             <summary>
-              <input type="checkbox" role="switch" @click="ok=await toggleShortcut(shortcut)" x-model="shortcut.enabled" x-bind:aria-invalid="!ok">
+              <input
+                type="checkbox"
+                role="switch"
+                @click="ok=await toggleShortcut(shortcut)"
+                x-model="shortcut.enabled"
+                x-bind:aria-invalid="!ok">
               <span x-text="shortcut.name"></span>
             </summary>
             <br />
@@ -43,14 +60,25 @@
               <!-- Name -->
               <label for="name">
                 Name
-                <input type="text" id="name" x-model="shortcut.name" x-bind:disabled="shortcut.enabled">
+                <input
+                  type="text"
+                  id="name"
+                  x-model="shortcut.name"
+                  x-bind:disabled="shortcut.enabled">
               </label>
 
               <!-- Accelerator -->
               <label for="accelerator">
                 Accelerator
-                <input type="text" id="accelerator" x-model="shortcut.acc" x-bind:disabled="shortcut.enabled" x-bind:aria-invalid="!ok">
-                <small x-show="!ok">Accelerator is invalid or already in use</small>
+                <input
+                  type="text"
+                  id="accelerator"
+                  x-model="shortcut.acc"
+                  x-bind:disabled="shortcut.enabled"
+                  x-bind:aria-invalid="!ok">
+                <small x-show="!ok">
+                  Accelerator is invalid or already in use
+                </small>
               </label>
             </div>
 
@@ -61,7 +89,10 @@
               <div class="grid-1-4-1">
                 <label for="method">
                   Method
-                  <select id="method" x-model="shortcut.params.method" x-bind:disabled="shortcut.enabled">
+                  <select
+                    id="method"
+                    x-model="shortcut.params.method"
+                    x-bind:disabled="shortcut.enabled">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
                   </select>
@@ -72,7 +103,11 @@
               <div class="grid-1-4-2">
                 <label for="endpoint">
                   Endpoint
-                  <input type="text" id="endpoint" x-model="shortcut.params.endpoint" x-bind:disabled="shortcut.enabled">
+                  <input
+                    type="text"
+                    id="endpoint"
+                    x-model="shortcut.params.endpoint"
+                    x-bind:disabled="shortcut.enabled">
                 </label>
               </div>
             </div>
@@ -80,22 +115,59 @@
             <!-- Request body -->
             <label for="request-body">
               Request body
-              <input type="text" id="request-body" x-model="shortcut.params.body" x-bind:disabled="shortcut.enabled">
+              <input
+                type="text"
+                id="request-body"
+                x-model="shortcut.params.body"
+                x-bind:disabled="shortcut.enabled">
             </label>
 
             <!-- Custom handler -->
             <label for="custom-handler">
-              <input type="checkbox" role="switch" @click="toggleShortcutHandler(shortcut)" x-model="shortcut.handler.enabled" x-bind:disabled="shortcut.enabled">
+              <input
+                type="checkbox"
+                role="switch"
+                x-model="shortcut.handler.enabled"
+                x-bind:disabled="shortcut.enabled"
+                @click="toggleShortcutHandler(shortcut)" >
               Send custom notification
-              <textarea id="custom-handler" rows="3" x-show="shortcut.handler.enabled" x-model="shortcut.handler.code" x-bind:disabled="shortcut.enabled"></textarea>
+              <textarea
+                id="custom-handler"
+                rows="3"
+                x-show="shortcut.handler.enabled"
+                x-model="shortcut.handler.code"
+                x-bind:disabled="shortcut.enabled">
+              </textarea>
             </label>
             <br />
 
             <!-- Trigger/Duplicate/Delete -->
             <div class="grid">
-              <button @click="triggerShortcut(shortcut).then(content => $store.responseModal.open(content))">Trigger</button>
+              <!-- Busy trigger -->
+              <button
+                x-data="busyButton"
+                x-bind:aria-busy="busy"
+                x-bind:disabled="busy"
+                x-bind:class="busy && 'secondary'"
+                @click="
+                  busyWhile(() =>
+                    triggerShortcut(shortcut).then(content =>
+                    $store.responseModal.open(content))
+                  )">
+                Trigger
+              </button>
+              <!-- Duplicate -->
               <button @click="duplicateShortcut(shortcut)">Duplicate</button>
-              <button @click="deleteShortcut(shortcut)" class="darkred">Delete</button>
+              <!-- 2-step delete -->
+              <button
+                x-data="twoStepButton"
+                x-text="waiting ? 'Confirm' : 'Delete'"
+                x-bind:class="waiting && 'darkred'"
+                @click="
+                  waitConfirmation(() =>
+                    deleteShortcut(shortcut)
+                  )">
+              </button>
             </div>
 
           </details>
@@ -103,7 +175,9 @@
       </template>
 
       <!-- Create new shortcut -->
-      <button @click="createShortcut()" class="darkgreen">New shortcut</button>
+      <button class="darkgreen" @click="createShortcut()">
+        New shortcut
+      </button>
     </main>
   </div>
 
@@ -159,7 +233,12 @@
 
       <label for="darkTheme">
         Dark theme
-        <input type="checkbox" role="switch" name="darkTheme" @click="toggleDarkTheme()" x-model="darkTheme">
+        <input
+          type="checkbox"
+          role="switch"
+          name="darkTheme"
+          x-model="darkTheme"
+          @click="toggleDarkTheme()">
       </label>
       <br />
 
@@ -174,13 +253,32 @@
 
       <label for="autoSave">
         Auto save
-        <input type="checkbox" role="switch" name="autoSave" @click="toggleAutoSave()" x-model="autoSave">
+        <input
+          type="checkbox"
+          role="switch"
+          name="autoSave"
+          x-model="autoSave"
+          @click="toggleAutoSave()">
       </label>
-      <small>Runs on shortcut creation, deletion and toggle</small>
+      <small>
+        Runs on shortcut creation, deletion and toggle
+      </small>
 
       <footer>
-        <a href="#" role="button" @click="$store.settingsModal.close()" class="secondary">Close without saving</a>
-        <a href="#" role="button" @click="saveUserConfig().then($store.settingsModal.close())" class="darkgreen">Save and close</a>
+        <a
+          href="#"
+          role="button"
+          class="secondary"
+          @click="$store.settingsModal.close()">
+          Close without saving
+        </a>
+        <a
+          href="#"
+          role="button"
+          class="darkgreen"
+          @click="saveUserConfig().then($store.settingsModal.close())">
+          Save and close
+        </a>
       </footer>
     </article>
   </dialog>
@@ -196,7 +294,13 @@
       <p>For more information about this application contact:</p>
       <p>Agustín Mista (agustin@mista.me)</p>
       <footer>
-        <a href="#" role="button" @click="$store.aboutModal.close()" class="darkgreen">Close</a>
+        <a
+          href="#"
+          role="button"
+          class="darkgreen"
+          @click="$store.aboutModal.close()">
+          Close
+        </a>
       </footer>
     </article>
   </dialog>
@@ -209,7 +313,13 @@
       </header>
       <span x-html="$store.responseModal.data"></span>
       <footer>
-        <a href="#" role="button" @click="$store.responseModal.close()" class="darkgreen">Close</a>
+        <a
+          href="#"
+          role="button"
+          class="darkgreen"
+          @click="$store.responseModal.close()">
+          Close
+        </a>
       </footer>
     </article>
   </dialog>
