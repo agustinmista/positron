@@ -1,13 +1,28 @@
 @import '@picocss/pico/css/pico.min.css';
 
+/* Disable scrollbars */
 
 body::-webkit-scrollbar {
   display: none;
 }
 
+/* Disable selectable text */
+
 body {
   user-select: none;
 }
+
+/* Sticky nav */
+
+body nav {
+  position: fixed;
+  top: 0px;
+  z-index: 10;
+  background-color: var(--card-background-color);
+  box-shadow: var(--card-box-shadow);
+}
+
+/* Smaller margins on shortcut cards */
 
 details {
   border-bottom: none;
@@ -15,13 +30,17 @@ details {
   padding-bottom: 0px;
 }
 
+/* Code area */
+
 textarea {
   resize: vertical;
   font-family: monospace;
 }
 
+/* Accents */
+
 .bigger {
-  font-size: xx-large;
+  font-size: 1.5em;
   font-weight: bolder;
 }
 
@@ -35,6 +54,11 @@ textarea {
   border-color: darkgreen;
 }
 
+.attention {
+  color: var(--form-element-invalid-border-color);
+  transition: 0.5s !important;
+}
+
 #icon {
   height: 1.5em;
   width: 1.5em;
@@ -44,6 +68,9 @@ textarea {
   height: 5em;
   width: 5em;
 }
+
+/* Minimal 1/4 grid */
+
 .grid-1-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

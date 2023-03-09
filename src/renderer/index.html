@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html
   x-data="app"
-  x-cloak
   x-init="initialize"
-  x-bind:data-theme="darkTheme ? 'dark' : 'light'">
+  x-cloak
+  :data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
@@ -11,33 +11,46 @@
 </head>
 
 <body>
+
+  <!-- Top nav -->
+  <header>
+    <nav class="container-fluid">
+      <ul>
+        <li>
+          <span class="bigger">
+            <img id="icon" @click="openExternal('https://github.com/agustinmista/positron')"/>
+          </span>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <button @click="$store.settingsModal.open()">
+            Settings
+          </button>
+        </li>
+        <li>
+          <button @click="$store.aboutModal.open()">
+            About
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main content -->
   <div class="container-fluid">
-
-    <!-- Top nav -->
-    <header>
-      <nav>
-        <ul>
-          <li><span class="bigger">Positron</span></li>
-        </ul>
-        <ul>
-          <li>
-            <button @click="$store.settingsModal.open()">
-              Settings
-            </button>
-          </li>
-          <li>
-            <button @click="$store.aboutModal.open()">
-              About
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <!-- Main content -->
     <main class="container">
 
       <!-- Shortcuts -->
+
+      <!-- Empty -->
+      <article x-show="shortcuts.length === 0" x-transition>
+        <span>
+          It's lonely here. Try adding a new shortcut!
+        </span>
+      </article>
+
+      <!-- Not empty -->
       <template x-for="shortcut in shortcuts" :key="shortcut.id">
         <article x-data="{ok: true}">
           <details>
@@ -47,10 +60,16 @@
               <input
                 type="checkbox"
                 role="switch"
-                @click="ok=await toggleShortcut(shortcut)"
                 x-model="shortcut.enabled"
-                x-bind:aria-invalid="!ok">
-              <span x-text="shortcut.name"></span>
+                :aria-invalid="!ok"
+                @click="ok=await toggleShortcut(shortcut)">
+              <span x-text="shortcut.name">
+              </span>
+              <span
+                x-show="shortcut.acc"
+                x-text="`(${shortcut.acc})`"
+                :class.transition="!ok && 'attention'">
+              </span>
             </summary>
             <br />
 
@@ -64,7 +83,7 @@
                   type="text"
                   id="name"
                   x-model="shortcut.name"
-                  x-bind:disabled="shortcut.enabled">
+                  :disabled="shortcut.enabled">
               </label>
 
               <!-- Accelerator -->
@@ -74,8 +93,8 @@
                   type="text"
                   id="accelerator"
                   x-model="shortcut.acc"
-                  x-bind:disabled="shortcut.enabled"
-                  x-bind:aria-invalid="!ok">
+                  :disabled="shortcut.enabled"
+                  :aria-invalid="!ok">
                 <small x-show="!ok">
                   Accelerator is invalid or already in use
                 </small>
@@ -92,7 +111,7 @@
                   <select
                     id="method"
                     x-model="shortcut.params.method"
-                    x-bind:disabled="shortcut.enabled">
+                    :disabled="shortcut.enabled">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
                   </select>
@@ -107,7 +126,7 @@
                     type="text"
                     id="endpoint"
                     x-model="shortcut.params.endpoint"
-                    x-bind:disabled="shortcut.enabled">
+                    :disabled="shortcut.enabled">
                 </label>
               </div>
             </div>
@@ -128,15 +147,15 @@
                 type="checkbox"
                 role="switch"
                 x-model="shortcut.handler.enabled"
-                x-bind:disabled="shortcut.enabled"
-                @click="toggleShortcutHandler(shortcut)" >
+                :disabled="shortcut.enabled"
+                @click="toggleShortcutHandler(shortcut)">
               Send custom notification
               <textarea
                 id="custom-handler"
-                rows="3"
+                rows="5"
                 x-show="shortcut.handler.enabled"
                 x-model="shortcut.handler.code"
-                x-bind:disabled="shortcut.enabled">
+                :disabled="shortcut.enabled">
               </textarea>
             </label>
             <br />
@@ -146,27 +165,26 @@
               <!-- Busy trigger -->
               <button
                 x-data="busyButton"
-                x-bind:aria-busy="busy"
-                x-bind:disabled="busy"
-                x-bind:class="busy && 'secondary'"
-                @click="
-                  busyWhile(() =>
-                    triggerShortcut(shortcut).then(content =>
-                    $store.responseModal.open(content))
-                  )">
+                x-model="busy"
+                :class="busy && 'secondary'"
+                :aria-busy="busy"
+                :disabled="busy"
+                @click="busyWhile(() =>
+                  triggerShortcut(shortcut).then(content =>
+                    $store.responseModal.open(content)))">
                 Trigger
               </button>
               <!-- Duplicate -->
-              <button @click="duplicateShortcut(shortcut)">Duplicate</button>
+              <button @click="duplicateShortcut(shortcut)">
+                Duplicate
+              </button>
               <!-- 2-step delete -->
               <button
                 x-data="twoStepButton"
                 x-text="waiting ? 'Confirm' : 'Delete'"
-                x-bind:class="waiting && 'darkred'"
-                @click="
-                  waitConfirmation(() =>
-                    deleteShortcut(shortcut)
-                  )">
+                :class="waiting && 'darkred'"
+                @click="waitConfirmation(() =>
+                  deleteShortcut(shortcut))">
               </button>
             </div>
 
@@ -184,14 +202,18 @@
   <!-- Modals -->
 
   <!-- Settings -->
-  <dialog open x-show="$store.settingsModal.isOpen" x-transition>
+  <dialog open
+    x-show="$store.settingsModal.isOpen"
+    x-transition
+    @keydown.escape.window="$store.settingsModal.close()">
+
     <article>
       <header>
         <span class="bigger">Settings</span>
       </header>
 
       <!-- Server settings -->
-      <h4>Server</h4>
+      <h4>HomeAssistant Server</h4>
 
       <!-- Protocol/Host -->
       <div class="grid-1-4">
@@ -211,7 +233,10 @@
         <div class="grid-1-4-2">
           <label for="hostname">
             Hostname
-            <input type="text" id="hostname" x-model="server.hostname">
+            <input
+              type="text"
+              id="hostname"
+              x-model="server.hostname">
           </label>
         </div>
       </div>
@@ -219,13 +244,19 @@
       <!-- Port -->
       <label for="port">
         Port
-        <input type="text" id="port" x-model="server.port">
+        <input
+          type="text"
+          id="port"
+          x-model="server.port">
       </label>
 
       <!-- Token -->
       <label for="token">
         Long-lived access token
-        <input type="text" id="token" x-model="server.token">
+        <input
+          type="text"
+          id="token"
+          x-model="server.token">
       </label>
 
       <!-- Appearence settings -->
@@ -246,8 +277,12 @@
       <h4>Configuration file</h4>
 
       <div class="grid">
-        <button @click="initialize()">Reload</button>
-        <button @click="openUserConfig()">Open</button>
+        <button @click="initialize()">
+          Reload
+        </button>
+        <button @click="openUserConfig()">
+          Open
+        </button>
       </div>
       <br />
 
@@ -284,15 +319,31 @@
   </dialog>
 
   <!-- About -->
-  <dialog open x-show="$store.aboutModal.isOpen" x-transition>
+  <dialog open
+    x-show="$store.aboutModal.isOpen"
+    x-transition
+    @keydown.escape.window="$store.aboutModal.close()">
     <article>
       <header>
         <span class="bigger">About</span>
       </header>
-      <p>Positron <span x-text="getAppVersion"></span></p>
-      <p>Create keyboard shortcuts for Home Assistant actions.</p>
-      <p>For more information about this application contact:</p>
-      <p>Agustín Mista (agustin@mista.me)</p>
+
+      <img id="icon-bigger" />
+      <br />
+      <br />
+      <p>
+        Positron <span x-text="getAppVersion"></span><br />
+        Create keyboard shortcuts for Home Assistant actions.
+      </p>
+      <p>
+        For more information about this application contact:<br />
+        Agustín Mista (agustin@mista.me)
+      </p>
+      <p>
+        Source code available at:<br />
+        <button @click="openExternal('https://github.com/agustinmista/positron')">GitHub</button>
+      </p>
+
       <footer>
         <a
           href="#"
@@ -306,7 +357,10 @@
   </dialog>
 
   <!-- Response -->
-  <dialog open x-show="$store.responseModal.isOpen" x-transition>
+  <dialog open
+    x-show="$store.responseModal.isOpen"
+    x-transition
+    @keydown.escape.window="$store.responseModal.close()">
     <article>
       <header>
         <span class="bigger">Response</span>
