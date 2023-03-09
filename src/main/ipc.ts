@@ -1,4 +1,4 @@
-import { ipcMain, globalShortcut, app, Notification } from "electron";
+import { app, ipcMain, globalShortcut, Notification, shell } from "electron";
 import Store from 'electron-store';
 import vm from 'vm';
 
@@ -13,7 +13,7 @@ export function initIPCHandlers(store: Store) {
 
   ipcMain.handle('api/triggerRequest', async (_event, server, params, handler = null) => {
     console.log('HANDLING api/triggerRequest');
-    const response = await handleShortcutRequest(server, params, handler);
+    const response: string = await handleShortcutRequest(server, params, handler);
     return response;
   });
 
@@ -58,6 +58,11 @@ export function initIPCHandlers(store: Store) {
   ipcMain.handle('api/getAppVersion', (_event) => {
     console.log('HANDLING api/getAppVersion');
     return app.getVersion();
+  });
+
+  ipcMain.handle('api/openExternal', (_event, url) => {
+    console.log(`HANDLING api/openExternal ${url}`);
+    return shell.openExternal(url);
   });
 
 }

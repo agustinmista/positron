@@ -23,7 +23,9 @@ export const api = {
   openUserConfig: async () =>
     await ipcRenderer.invoke('api/openUserConfig'),
   getAppVersion: async () =>
-    await ipcRenderer.invoke('api/getAppVersion')
+    await ipcRenderer.invoke('api/getAppVersion'),
+  openExternal: async (url: string) =>
+    await ipcRenderer.invoke('api/openExternal', url)
 };
 
 contextBridge.exposeInMainWorld('api', api);

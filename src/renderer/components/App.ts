@@ -227,6 +227,10 @@ export default class App {
     return version;
   }
 
+  openExternal = async function (url: string): Promise<void> {
+    return window.api.openExternal(url);
+  };
+
 };
 
 // ----------------------------------------
