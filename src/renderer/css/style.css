@@ -35,6 +35,15 @@ textarea {
   border-color: darkgreen;
 }
 
+#icon {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+#icon-bigger {
+  height: 5em;
+  width: 5em;
+}
 .grid-1-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
