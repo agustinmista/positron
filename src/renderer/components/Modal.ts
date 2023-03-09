@@ -12,26 +12,20 @@ export default class Modal {
   // Optional data to pass to the open method
   data: string
 
-  // A promise that holds until the user presses close
-  resolve: () => void
-
   constructor() {
     this.isOpen = false;
     this.data = null;
-    this.resolve = null;
   }
 
   // ----------------------------------------
   // Open/close
 
-  open = function (data: string = null): Promise<void> {
+  open = function (data: string = null): void {
     this.isOpen = true;
     this.data = data;
-    return new Promise(resolve => this.resolve = resolve);
   }
 
-  close = async function (): Promise<void> {
+  close = function (): void {
     this.isOpen = false;
-    await this.resolve(null);
   }
 }
