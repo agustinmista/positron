@@ -241,3 +241,9 @@ export default class App {
 function clone(obj: Object) {
   return JSON.parse(JSON.stringify(obj));
 }
+
+function delay(ms: number) {
+  return new Promise(resolve =>
+    setTimeout(resolve, ms)
+  );
+}
