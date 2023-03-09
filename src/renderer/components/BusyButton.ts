@@ -17,7 +17,7 @@ export default class BusyButton {
   // Stay busy until the given callback finishes executing
   busyWhile = async function (callback: () => Promise<unknown>) {
     this.busy = true;
-    const res = await callback()
+    const res = await callback();
     this.busy = false;
     return res;
   }
