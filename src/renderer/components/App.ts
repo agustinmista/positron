@@ -88,7 +88,7 @@ export default class App {
       },
       handler: {
         enabled: false,
-        code: `response => response.ok ? 'All good chief' : 'There was an error:' + response.body`
+        code: `res => res.ok ? 'Ok' : res.body`
       }
     });
 
