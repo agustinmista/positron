@@ -23,7 +23,7 @@ export interface HomeAssistantResponse {
 }
 
 // ----------------------------------------
-// Making requests to HomeAssistant servers
+// Making requests to Home Assistant servers
 // ----------------------------------------
 
 export const homeAssistantRequest = async (

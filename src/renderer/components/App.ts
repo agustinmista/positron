@@ -32,7 +32,7 @@ export interface UserConfig {
 
 export default class App {
 
-  // The HomeAssistant server to make requests to
+  // The Home Assistant server to make requests to
   server: HomeAssistantServer
 
   // The user-defined shortcuts

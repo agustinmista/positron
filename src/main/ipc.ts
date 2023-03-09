@@ -84,7 +84,7 @@ async function handleShortcutRequest(server: HomeAssistantServer, params: HomeAs
   }
 }
 
-// Make a request to the HomeAssistant server
+// Make a request to the Home Assistant server
 async function makeRequest(server: HomeAssistantServer, params: HomeAssistantRequestParams): Promise<HomeAssistantResponse> {
   console.log(`REQUESTING: ${JSON.stringify(params)}`);
   console.log(`FROM: ${JSON.stringify(server)}`);
