@@ -17,6 +17,9 @@ import icon from '../img/icons/icon.png';
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
+// Are we in development mode?
+const isDev: boolean = process.env.NODE_ENV === 'development';
+
 // ----------------------------------------
 // Main app window
 // ----------------------------------------
@@ -31,7 +34,7 @@ export function createMainWindow() {
   mainWindow = new BrowserWindow({
     icon: icon,
     height: 1000,
-    width: 600,
+    width: isDev ? 1200 : 600,
     webPreferences: {
       zoomFactor: 0.8,
       contextIsolation: true,
@@ -52,7 +55,7 @@ export function createMainWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // Open the DevTools if we are in dev mode
-  if (process.env.NODE_ENV === 'development') {
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 
