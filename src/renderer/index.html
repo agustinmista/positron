@@ -90,7 +90,7 @@
               <!-- Endpoint -->
               <div class="grid-1-4-2">
                 <label>Endpoint</label>
-                <input type="text" id="endpoint" x-model="shortcut.params.endpoint" :disabled="shortcut.enabled">
+                <input type="text" x-model="shortcut.params.endpoint" :disabled="shortcut.enabled">
               </div>
             </div>
 
@@ -125,10 +125,10 @@
                 <div class="grid-2-2-1">
 
                   <!-- Key -->
-                  <input class="grid-2-2-1-1" type="text" id="request-key" placeholder="Key" x-model="pair.key" :aria-invalid="!pair.key || shortcut.params.body.filter(otherPair => otherPair.key === pair.key).length > 1" :disabled="shortcut.enabled">
+                  <input class="grid-2-2-1-1" type="text" placeholder="Key" x-model="pair.key" :aria-invalid="!pair.key || shortcut.params.body.filter(otherPair => otherPair.key === pair.key).length > 1" :disabled="shortcut.enabled">
 
                   <!-- Value -->
-                  <input class="grid-2-2-1-2" type="text" id="request-value" placeholder="Value" x-model="pair.value" :disabled="shortcut.enabled">
+                  <input class="grid-2-2-1-2" type="text" placeholder="Value" x-model="pair.value" :disabled="shortcut.enabled">
 
                   <!-- Remove button -->
                   <button class="grid-2-2-1-3 darkred" :disabled="shortcut.enabled" @click="removeRequestBodyEntry(shortcut, index)">
@@ -151,7 +151,7 @@
             </label>
             <br />
             <div x-show="shortcut.handler.enabled">
-              <textarea id="custom-handler" rows="5" x-model="shortcut.handler.code" :disabled="shortcut.enabled"></textarea>
+              <textarea rows="5" x-model="shortcut.handler.code" :disabled="shortcut.enabled"></textarea>
             </div>
 
             <!-- Toggle/Trigger/Duplicate/Delete -->
