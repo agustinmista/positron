@@ -122,9 +122,9 @@ export default class App {
   }
 
   // Create a new shortcut
-  deleteShortcut = async function (shortcut: Shortcut): Promise<void> {
+  deleteShortcut = async function (index: number): Promise<void> {
 
-    this.shortcuts = this.shortcuts.filter((elem: Shortcut) => elem.id !== shortcut.id);
+    this.shortcuts.splice(index, 1);
 
     if (this.autoSave) {
       await this.saveUserConfig();
@@ -200,24 +200,13 @@ export default class App {
     shortcut.handler.enabled = !shortcut.handler.enabled;
   }
 
-  // Enumerate the shortcut's request body entries
-  getRequestBodyEntries = function (shortcut: Shortcut): Array<[number, KeyValuePair]> {
-    var n: number = 0;
-    var pairs: Array<[number, KeyValuePair]> = [];
-    shortcut.params.body.forEach(pair => {
-      pairs.push([n, pair]);
-      n++;
-    });
-    return pairs;
-  }
-
   // Add a key value pair to a shortcut's request body
   createRequestBodyEntry = function (shortcut: Shortcut): void {
     shortcut.params.body.push({ key: '', value: '' });
   }
 
-  // Remove a key value pair from a shortcut's request body
-  removeRequestBodyEntry = function (shortcut: Shortcut, index: number): void {
+  // Delete a key value pair from a shortcut's request body
+  deleteRequestBodyEntry = function (shortcut: Shortcut, index: number): void {
     shortcut.params.body.splice(index, 1);
   }
 
