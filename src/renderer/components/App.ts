@@ -135,6 +135,11 @@ export default class App {
   // Returns false if there was a problem registering the shortcut accelerator
   enableShortcut = async function (shortcut: Shortcut): Promise<boolean> {
 
+    // Validate the request body (shouldn't be needed)
+    if (!this.isValidRequestBody(shortcut.params.body)) {
+      return false;
+    }
+
     // Try to register the shortcut in the main process
     shortcut.enabled = await window.api.registerShortcut(
       shortcut.acc,
@@ -157,13 +162,12 @@ export default class App {
 
   // Toggle the state of an existing shortcut
   toggleShortcut = async function (shortcut: Shortcut): Promise<boolean> {
-    let ok: boolean;
+    let ok: boolean = true;
 
     if (!shortcut.enabled) {
       ok = await this.enableShortcut(shortcut);
     } else {
       await this.disableShortcut(shortcut);
-      ok = true;
     }
 
     if (this.autoSave) {
@@ -176,6 +180,13 @@ export default class App {
   // Manually trigger a shortcut request
   // Returns a stringified JSON response
   triggerShortcut = async function (shortcut: Shortcut): Promise<string> {
+
+    // Validate the request body (shouldn't be needed)
+    if (!this.isValidRequestBody(shortcut.params.body)) {
+      return 'Invalid request body';
+    }
+
+    // Send the request
     const response = await window.api.triggerRequest(
       clone(this.server),
       clone(shortcut.params),
@@ -210,10 +221,23 @@ export default class App {
     shortcut.params.body.splice(index, 1);
   }
 
-  // Check if a key in a shortcut's request body is valid
-  isValidRequestBodyEntryKey = function (shortcut: Shortcut, key: string) {
-    if (key.length === 0) { return false; }
-    if (shortcut.params.body.filter(pair => pair.key === key).length > 1) { return false; }
+  // Validate the key/value pairs of a shortcut's request body
+  isValidRequestBody = function (body: Array<KeyValuePair>): boolean {
+
+    // Extract the keys
+    const keys: Array<string> = body.map(pair => pair.key);
+
+    // Check empty keys
+    if (keys.includes('')) {
+      return false
+    };
+
+    // Check duplicates
+    if ((new Set(keys)).size !== keys.length) {
+      return false;
+    };
+
+    // All good otherwise
     return true;
   }
 
@@ -275,24 +299,4 @@ function delay(ms: number) {
   return new Promise(resolve =>
     setTimeout(resolve, ms)
   );
-}
-
-// Validate the key/value pairs of a shortcut's request body
-function isValidRequestBody(body: Array<KeyValuePair>): boolean {
-
-  // Extract the keys
-  const keys: Array<string> = body.map(pair => pair.key);
-
-  // Check empty keys
-  if (keys.includes('')) {
-    return false
-  };
-
-  // Check duplicates
-  if ((new Set(keys)).size !== keys.length) {
-    return false;
-  };
-
-  // All good otherwise
-  return true;
 }
