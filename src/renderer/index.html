@@ -236,10 +236,11 @@
   <!-- Modals -->
 
   <!-- Settings -->
-  <dialog open
+  <dialog open x-cloak
     x-show="$store.settingsModal.isOpen"
     x-transition
-    @keydown.escape.window="$store.settingsModal.close()">
+    @close-modal="$store.settingsModal.close()"
+    @keydown.escape.window="$dispatch('close-modal')">
 
     <article>
       <header>
@@ -334,29 +335,28 @@
       </small>
 
       <footer>
-        <a
-          href="#"
-          role="button"
+        <div class="grid">
+        <button
           class="secondary"
-          @click="$store.settingsModal.close()">
+          @click="$dispatch('close-modal')">
           Close without saving
-        </a>
-        <a
-          href="#"
-          role="button"
+        </button>
+        <button
           class="darkgreen"
-          @click="saveUserConfig().then($store.settingsModal.close())">
+          @click="saveUserConfig().then($dispatch('close-modal'))">
           Save and close
-        </a>
+        </button>
+      </div>
       </footer>
     </article>
   </dialog>
 
   <!-- About -->
-  <dialog open
+  <dialog open x-cloak
     x-show="$store.aboutModal.isOpen"
     x-transition
-    @keydown.escape.window="$store.aboutModal.close()">
+    @close-modal="$store.aboutModal.close()"
+    @keydown.escape.window="$dispatch('close-modal')">
     <article>
       <header>
         <span class="bigger">About</span>
@@ -395,35 +395,32 @@
       </p>
 
       <footer>
-        <a
-          href="#"
-          role="button"
+        <button
           class="darkgreen"
-          @click="$store.aboutModal.close()">
+          @click="$dispatch('close-modal')">
           Close
-        </a>
+        </button>
       </footer>
     </article>
   </dialog>
 
   <!-- Response -->
-  <dialog open
+  <dialog open x-cloak
     x-show="$store.responseModal.isOpen"
     x-transition
-    @keydown.escape.window="$store.responseModal.close()">
+    @close-modal="$store.responseModal.close()"
+    @keydown.escape.window="$dispatch('close-modal')">
     <article>
       <header>
         <span class="bigger">Response</span>
       </header>
       <span x-html="$store.responseModal.data"></span>
       <footer>
-        <a
-          href="#"
-          role="button"
+        <button
           class="darkgreen"
-          @click="$store.responseModal.close()">
+          @click="$dispatch('close-modal')">
           Close
-        </a>
+        </button>
       </footer>
     </article>
   </dialog>
