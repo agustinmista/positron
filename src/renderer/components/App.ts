@@ -270,8 +270,29 @@ function clone(obj: Object) {
   return JSON.parse(JSON.stringify(obj));
 }
 
+// Wait for a bit
 function delay(ms: number) {
   return new Promise(resolve =>
     setTimeout(resolve, ms)
   );
+}
+
+// Validate the key/value pairs of a shortcut's request body
+function isValidRequestBody(body: Array<KeyValuePair>): boolean {
+
+  // Extract the keys
+  const keys: Array<string> = body.map(pair => pair.key);
+
+  // Check empty keys
+  if (keys.includes('')) {
+    return false
+  };
+
+  // Check duplicates
+  if ((new Set(keys)).size !== keys.length) {
+    return false;
+  };
+
+  // All good otherwise
+  return true;
 }
