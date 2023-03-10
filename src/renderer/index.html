@@ -57,21 +57,22 @@
               <span x-text="shortcut.name"></span>
               <span x-show="shortcut.acc" x-text="`(${shortcut.acc})`" :class.transition="!status && 'attention'"></span>
             </summary>
-            <hr />
             <br />
 
             <!-- Name/Accelerator -->
             <div class="grid">
               <!-- Name -->
-              <label>Name
+              <div>
+                <label>Name</label>
                 <input type="text" x-model="shortcut.name" :disabled="shortcut.enabled">
-              </label>
+              </div>
 
               <!-- Accelerator -->
-              <label>Accelerator
+              <div>
+                <label>Accelerator</label>
                 <input type="text" x-model="shortcut.acc" :disabled="shortcut.enabled" :aria-invalid="!status" @input="status=true">
                 <small x-show="!status">Accelerator is invalid or already in use</small>
-              </label>
+              </div>
             </div>
 
             <!-- Method/Endpoint -->
@@ -79,85 +80,79 @@
 
               <!-- Method -->
               <div class="grid-1-4-1">
-                <label>Method
-                  <select x-model="shortcut.params.method" :disabled="shortcut.enabled">
-                    <option value="GET">GET</option>
-                    <option value="POST">POST</option>
-                  </select>
-                </label>
+                <label>Method</label>
+                <select x-model="shortcut.params.method" :disabled="shortcut.enabled">
+                  <option value="GET">GET</option>
+                  <option value="POST">POST</option>
+                </select>
               </div>
 
               <!-- Endpoint -->
               <div class="grid-1-4-2">
-                <label>Endpoint
-                  <input type="text" id="endpoint" x-model="shortcut.params.endpoint" :disabled="shortcut.enabled">
-                </label>
+                <label>Endpoint</label>
+                <input type="text" id="endpoint" x-model="shortcut.params.endpoint" :disabled="shortcut.enabled">
               </div>
             </div>
 
-            <hr />
-            <br />
-
             <!-- Request body key/value pairs  -->
-            <label x-data="{hasBody: false}" x-init="hasBody=shortcut.params.body.length > 0">
 
-              <!-- Header -->
-              <div class="grid-2-2-1">
-                <div class="grid-2-2-1-1">
-                  <input type="checkbox" role="switch" x-model="hasBody" :disabled="shortcut.enabled" @click="if (hasBody) { shortcut.params.body=[] } else { createRequestBodyEntry(shortcut) }">
-                  Request data
-                </div>
-                <div class="grid-2-2-1-3" x-show="hasBody">
-                  <button class="darkgreen" :disabled="shortcut.enabled" @click="createRequestBodyEntry(shortcut)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            <!-- Header -->
+            <div class="grid-2-2-1">
+              <div class="grid-2-2-1-1">
+                <label>Request body</label>
+              </div>
+              <div class="grid-2-2-1-3">
+                <button class="darkgreen" :disabled="shortcut.enabled" data-tooltip="Add a new key/value pair" @click="createRequestBodyEntry(shortcut)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Key/value pairs -->
+
+            <!-- Empty -->
+            <div x-show="!shortcut.params.body.length">
+              <input disabled placeholder="Empty (press + to add a new key/value pair)"/>
+              <br />
+              <br />
+            </div>
+
+            <!-- Not empty -->
+            <div x-show="shortcut.params.body.length">
+              <template x-for="[index, pair] in getRequestBodyEntries(shortcut)" :key="index">
+                <div class="grid-2-2-1">
+
+                  <!-- Key -->
+                  <input class="grid-2-2-1-1" type="text" id="request-key" placeholder="Key" x-model="pair.key" :aria-invalid="!pair.key || shortcut.params.body.filter(otherPair => otherPair.key === pair.key).length > 1" :disabled="shortcut.enabled">
+
+                  <!-- Value -->
+                  <input class="grid-2-2-1-2" type="text" id="request-value" placeholder="Value" x-model="pair.value" :disabled="shortcut.enabled">
+
+                  <!-- Remove button -->
+                  <button class="grid-2-2-1-3 darkred" :disabled="shortcut.enabled" @click="removeRequestBodyEntry(shortcut, index)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                     </svg>
                   </button>
+
                 </div>
-              </div>
+              </template>
 
-              <!-- Key/value pairs -->
-              <div x-show="hasBody">
-                <template x-for="[index, pair] in getRequestBodyEntries(shortcut)" :key="index">
-                  <div class="grid-2-2-1">
-
-                    <!-- Key -->
-                    <input class="grid-2-2-1-1" type="text" id="request-key" placeholder="Key" x-model="pair.key" :aria-invalid="!pair.key || shortcut.params.body.filter(otherPair => otherPair.key === pair.key).length > 1" :disabled="shortcut.enabled">
-
-                    <!-- Value -->
-                    <input class="grid-2-2-1-2" type="text" id="request-value" placeholder="Value" x-model="pair.value" :disabled="shortcut.enabled">
-
-                    <!-- Remove button -->
-                    <button class="grid-2-2-1-3 darkred" :disabled="shortcut.enabled" @click="removeRequestBodyEntry(shortcut, index)">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                      </svg>
-                    </button>
-
-                  </div>
-                </template>
-
-              </div>
               <br />
-            </label>
-
-            <hr />
-            <br />
+            </div>
 
             <!-- Custom handler -->
             <label>
               <input type="checkbox" role="switch" x-model="shortcut.handler.enabled" :disabled="shortcut.enabled" @click="toggleShortcutHandler(shortcut)">
               Send custom notification
-              <br />
-              <br />
-              <div x-show="shortcut.handler.enabled">
-                <textarea id="custom-handler" rows="5" x-model="shortcut.handler.code" :disabled="shortcut.enabled"></textarea>
-              </div>
             </label>
-
-            <hr />
             <br />
+            <div x-show="shortcut.handler.enabled">
+              <textarea id="custom-handler" rows="5" x-model="shortcut.handler.code" :disabled="shortcut.enabled"></textarea>
+            </div>
 
             <!-- Toggle/Trigger/Duplicate/Delete -->
             <div class="grid">
@@ -166,13 +161,13 @@
               <button x-text="shortcut.enabled ? 'Disable' : 'Enable'" :class="shortcut.enabled ? 'secondary' : 'darkgreen'" :disabled="!isValidRequestBody(shortcut.params.body)" @click="status=await toggleShortcut(shortcut)"></button>
 
               <!-- Busy trigger -->
-              <button x-data="busyButton" x-model="busy" :class="busy && 'secondary'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(content => $store.responseModal.open(content)))">Trigger</button>
+              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(content => $store.responseModal.open(content)))">Trigger</button>
 
               <!-- Duplicate -->
               <button @click="duplicateShortcut(shortcut)">Duplicate</button>
 
               <!-- 2-step delete -->
-              <button x-data="twoStepButton" x-text="waiting ? 'Confirm' : 'Delete'" :class="waiting && 'darkred'" @click="waitConfirmation(() =>deleteShortcut(shortcut))"></button>
+              <button x-data="twoStepButton" x-text="waiting ? 'Confirm' : 'Delete'" class="darkred" @click="waitConfirmation(() =>deleteShortcut(shortcut))"></button>
             </div>
 
           </details>
@@ -202,54 +197,51 @@
 
         <!-- Protocol -->
         <div class="grid-1-4-1">
-          <label>Protocol
-            <select x-model="server.protocol">
-              <option value="http">HTTP</option>
-              <option value="https">HTTPS</option>
-            </select>
-          </label>
+          <label>Protocol</label>
+          <select x-model="server.protocol">
+            <option value="http">HTTP</option>
+            <option value="https">HTTPS</option>
+          </select>
         </div>
 
         <!-- Hostname -->
         <div class="grid-1-4-2">
-          <label>Hostname
-            <input type="text" x-model="server.hostname">
-          </label>
+          <label>Hostname</label>
+          <input type="text" x-model="server.hostname">
         </div>
       </div>
 
       <!-- Port -->
-      <label>Port
-        <input type="text" x-model="server.port">
-      </label>
+      <label>Port</label>
+      <input type="text" x-model="server.port">
 
       <!-- TdidEnableen -->
-      <label>
-        Long-lived access token
-        <input type="text" x-model="server.token">
-      </label>
+      <label>Long-lived access token</label>
+      <input type="text" x-model="server.token">
 
       <!-- Appearence settings -->
       <h4>Appearence</h4>
 
-      <label>Dark theme
+      <label>
         <input type="checkbox" role="switch" name="darkTheme" x-model="darkTheme" @click="toggleDarkTheme()">
+        Dark theme
       </label>
       <br />
 
       <!-- User config file settings -->
       <h4>Configuration file</h4>
 
+      <label>
+        <input type="checkbox" role="switch" name="autoSave" x-model="autoSave" @click="toggleAutoSave()">
+        Auto save
+      </label>
+      <small>Runs on shortcut creation, deletion and toggle</small>
+      <br />
+      <br />
       <div class="grid">
         <button @click="initialize()">Reload</button>
         <button @click="openUserConfig()">Open</button>
       </div>
-      <br />
-
-      <label>Auto save
-        <input type="checkbox" role="switch" name="autoSave" x-model="autoSave" @click="toggleAutoSave()">
-      </label>
-      <small>Runs on shortcut creation, deletion and toggle</small>
 
       <footer>
         <div class="grid">
