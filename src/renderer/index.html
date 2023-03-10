@@ -2,7 +2,6 @@
 <html
   x-data="app"
   x-init="initialize"
-  x-cloak
   :data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
@@ -131,15 +130,50 @@
               </div>
             </div>
 
-            <!-- Request body -->
-            <label for="request-body">
-              Request body
-              <input
-                type="text"
-                id="request-body"
-                x-model="shortcut.params.body"
-                x-bind:disabled="shortcut.enabled">
-            </label>
+            <!-- Request body key/value pairs  -->
+            <label>Request data</label>
+
+            <template x-for="[index, pair] in getRequestBodyEntries(shortcut)" :key="index">
+              <div class="grid-2-2-1">
+
+                <!-- Key -->
+                <input
+                  class="grid-2-2-1-1"
+                  type="text"
+                  id="request-key"
+                  placeholder="Key"
+                  x-model="pair.key"
+                  :aria-invalid="!isValidRequestBodyEntryKey(shortcut, pair.key)"
+                  :disabled="shortcut.enabled">
+
+                <!-- Value -->
+                <input
+                  class="grid-2-2-1-2"
+                  type="text"
+                  id="request-value"
+                  placeholder="Value"
+                  x-model="pair.value"
+                  :disabled="shortcut.enabled">
+
+                <!-- Remove button -->
+                <button
+                  class="grid-2-2-1-3 darkred"
+                  :disabled="shortcut.enabled"
+                  @click="removeRequestBodyEntry(shortcut, index)">
+                  Remove
+                </button>
+
+              </div>
+            </template>
+
+            <!-- Add new key pair button -->
+            <button
+              class="darkgreen"
+              :disabled="shortcut.enabled"
+              @click="createRequestBodyEntry(shortcut)">
+              Add key/value pair
+            </button>
+            <br />
 
             <!-- Custom handler -->
             <label for="custom-handler">
@@ -342,9 +376,21 @@
       <p>
         Useful links:<br />
         <div class="grid">
-          <button class="secondary" @click="openExternal('https://github.com/agustinmista/positron')">Positron Webpage</button>
-          <button class="secondary" @click="openExternal('https://github.com/agustinmista/positron/issues')">Report Issues</button>
-          <button class="secondary" @click="openExternal('https://www.home-assistant.io')">Home Assistant</button>
+          <button
+            class="secondary"
+            @click="openExternal('https://github.com/agustinmista/positron')">
+            Positron Webpage
+          </button>
+          <button
+            class="secondary"
+            @click="openExternal('https://github.com/agustinmista/positron/issues')">
+            Report Issues
+          </button>
+          <button
+            class="secondary"
+            @click="openExternal('https://www.home-assistant.io')">
+            Home Assistant
+          </button>
         </div>
       </p>
 

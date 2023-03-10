@@ -86,3 +86,25 @@ textarea {
 .grid-1-4-2 {
   grid-area: 1 / 2 / 2 / 5;
 }
+
+/* Minimal 2/2/1 grid */
+
+.grid-2-2-1 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: var(--spacing);
+  grid-row-gap: 0px;
+}
+
+.grid-2-2-1-1 {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.grid-2-2-1-2 {
+  grid-area: 1 / 3 / 2 / 5;
+}
+
+.grid-2-2-1-3 {
+  grid-area: 1 / 5 / 2 / 6;
+}

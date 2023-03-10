@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { type HomeAssistantRequestParams, type HomeAssistantServer } from "../../lib/homeAssistant";
+import { type KeyValuePair, type HomeAssistantRequestParams, type HomeAssistantServer } from "../../lib/homeAssistant";
 
 // ----------------------------------------
 // Interfaces
@@ -84,7 +84,7 @@ export default class App {
       params: {
         method: 'POST',
         endpoint: '',
-        body: ''
+        body: []
       },
       handler: {
         enabled: false,
@@ -187,6 +187,34 @@ export default class App {
   // Toggle a custom shortcut handler
   toggleShortcutHandler = function (shortcut: Shortcut): void {
     shortcut.handler.enabled = !shortcut.handler.enabled;
+  }
+
+  // Enumerate the shortcut's request body entries
+  getRequestBodyEntries = function (shortcut: Shortcut): Array<[number, KeyValuePair]> {
+    var n: number = 0;
+    var pairs: Array<[number, KeyValuePair]> = [];
+    shortcut.params.body.forEach(pair => {
+      pairs.push([n, pair]);
+      n++;
+    });
+    return pairs;
+  }
+
+  // Add a key value pair to a shortcut's request body
+  createRequestBodyEntry = function (shortcut: Shortcut): void {
+    shortcut.params.body.push({ key: '', value: '' });
+  }
+
+  // Remove a key value pair from a shortcut's request body
+  removeRequestBodyEntry = function (shortcut: Shortcut, index: number): void {
+    shortcut.params.body.splice(index, 1);
+  }
+
+  // Check if a key in a shortcut's request body is valid
+  isValidRequestBodyEntryKey = function (shortcut: Shortcut, key: string) {
+    if (key.length === 0) { return false; }
+    if (shortcut.params.body.filter(pair => pair.key === key).length > 1) { return false; }
+    return true;
   }
 
   // Save the user config to the config file
