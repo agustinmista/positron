@@ -20,13 +20,9 @@ document.getElementById('icon-bigger').setAttribute('src', icon);
 // Alpine intitialization
 // ----------------------------------------
 
-alpine.data('app', () => { return new App() });
-alpine.data('busyButton', () => { return new BusyButton() });
-alpine.data('twoStepButton', () => { return new TwoStepButton() });
-alpine.data('editor', () => { return new Editor() });
-
-alpine.store('settingsModal', new Modal());
-alpine.store('aboutModal', new Modal());
-alpine.store('responseModal', new Modal());
-
+alpine.data('app',           () => new App());
+alpine.data('busyButton',    () => new BusyButton());
+alpine.data('twoStepButton', () => new TwoStepButton());
+alpine.data('editor',        () => new Editor());
+alpine.data('modal',         () => new Modal());
 alpine.start();

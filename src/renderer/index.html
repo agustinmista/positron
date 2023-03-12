@@ -20,12 +20,12 @@
       </ul>
       <ul>
         <li>
-          <button @click="$store.settingsModal.open()">
+          <button @click="$dispatch('open-settings-modal')">
             Settings
           </button>
         </li>
         <li>
-          <button @click="$store.aboutModal.open()">
+          <button @click="$dispatch('open-about-modal')">
             About
           </button>
         </li>
@@ -161,7 +161,7 @@
               <button x-text="shortcut.enabled ? 'Disable' : 'Enable'" :class="shortcut.enabled ? 'secondary' : 'darkgreen'" :disabled="!isValidRequestBody(shortcut.params.body)" @click="status=await toggleShortcut(shortcut)"></button>
 
               <!-- Busy trigger -->
-              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(content => $store.responseModal.open(content)))">Trigger</button>
+              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(content => $dispatch('open-response-modal', content)))">Trigger</button>
 
               <!-- Duplicate -->
               <button @click="duplicateShortcut(shortcut)">Duplicate</button>
@@ -182,7 +182,7 @@
   <!-- Modals -->
 
   <!-- Settings -->
-  <dialog open x-cloak x-show="$store.settingsModal.isOpen" x-transition @close-modal="$store.settingsModal.close()" @keydown.escape.window="$dispatch('close-modal')">
+  <dialog open x-data="modal" x-cloak x-show="isOpen" x-transition @open-settings-modal.window="open()" @keydown.escape.window="close()">
 
     <article>
       <header>
@@ -245,15 +245,15 @@
 
       <footer>
         <div class="grid">
-          <button class="secondary" @click="$dispatch('close-modal')">Close without saving</button>
-          <button class="darkgreen" @click="saveUserConfig().then($dispatch('close-modal'))">Save and close</button>
+          <button class="secondary" @click="close()">Close without saving</button>
+          <button class="darkgreen" @click="saveUserConfig().then(close())">Save and close</button>
         </div>
       </footer>
     </article>
   </dialog>
 
   <!-- About -->
-  <dialog open x-cloak x-show="$store.aboutModal.isOpen" x-transition @close-modal="$store.aboutModal.close()" @keydown.escape.window="$dispatch('close-modal')">
+  <dialog open x-data="modal" x-cloak x-show="isOpen" x-transition @open-about-modal.window="open()" @keydown.escape.window="close()">
     <article>
       <header>
         <span class="bigger">About</span>
@@ -280,20 +280,20 @@
       </p>
 
       <footer>
-        <button class="darkgreen" @click="$dispatch('close-modal')">Close</button>
+        <button class="darkgreen" @click="close()">Close</button>
       </footer>
     </article>
   </dialog>
 
   <!-- Response -->
-  <dialog open x-cloak x-show="$store.responseModal.isOpen" x-transition @close-modal="$store.responseModal.close()" @keydown.escape.window="$dispatch('close-modal')">
+  <dialog open x-data="modal" x-cloak x-show="isOpen" x-transition @open-response-modal.window="open($event.detail)" @keydown.escape.window="close()">
     <article>
       <header>
         <span class="bigger">Response</span>
       </header>
-      <span x-html="$store.responseModal.data"></span>
+      <span x-html="data"></span>
       <footer>
-        <button class="darkgreen" @click="$dispatch('close-modal')">Close</button>
+        <button class="darkgreen" @click="close()">Close</button>
       </footer>
     </article>
   </dialog>
