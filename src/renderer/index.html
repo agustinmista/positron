@@ -20,14 +20,10 @@
       </ul>
       <ul>
         <li>
-          <button @click="$dispatch('open-settings-modal')">
-            Settings
-          </button>
+          <button @click="$dispatch('open-settings-modal')">Settings</button>
         </li>
         <li>
-          <button @click="$dispatch('open-about-modal')">
-            About
-          </button>
+          <button @click="$dispatch('open-about-modal')">About</button>
         </li>
       </ul>
     </nav>
@@ -161,7 +157,7 @@
               <button x-text="shortcut.enabled ? 'Disable' : 'Enable'" :class="shortcut.enabled ? 'secondary' : 'darkgreen'" :disabled="!isValidRequestBody(shortcut.params.body)" @click="status=await toggleShortcut(shortcut)"></button>
 
               <!-- Busy trigger -->
-              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(content => $dispatch('open-response-modal', content)))">Trigger</button>
+              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(res => $dispatch('open-response-modal', res)))">Trigger</button>
 
               <!-- Duplicate -->
               <button @click="duplicateShortcut(shortcut)">Duplicate</button>
@@ -291,7 +287,9 @@
       <header>
         <span class="bigger">Response</span>
       </header>
+
       <span x-html="data"></span>
+
       <footer>
         <button class="darkgreen" @click="close()">Close</button>
       </footer>
