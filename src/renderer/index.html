@@ -151,7 +151,7 @@
             </label>
             <br />
             <div x-show="shortcut.handler.enabled">
-              <textarea rows="5" x-model="shortcut.handler.code" :disabled="shortcut.enabled"></textarea>
+              <textarea x-data="editor" rows="1" x-model="shortcut.handler.code" :disabled="shortcut.enabled" spellcheck="false" autocapitalize="off" autocorrect="off" @input="adjustHeight()" @keydown="captureTab()"></textarea>
             </div>
 
             <!-- Toggle/Trigger/Duplicate/Delete -->
