@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html x-data="app" x-init="initialize" :data-theme="darkTheme ? 'dark' : 'light'">
+<html x-data="app" x-init="initialize()" :data-theme="darkTheme ? 'dark' : 'light'">
 
 <head>
   <meta charset="UTF-8" />
@@ -157,7 +157,7 @@
               <button x-text="shortcut.enabled ? 'Disable' : 'Enable'" :class="shortcut.enabled ? 'secondary' : 'darkgreen'" :disabled="!isValidRequestBody(shortcut.params.body)" @click="status=await toggleShortcut(shortcut)"></button>
 
               <!-- Busy trigger -->
-              <button x-data="busyButton" x-model="busy" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(res => $dispatch('open-response-modal', res)))">Trigger</button>
+              <button x-data="busyButton" :class="busy ? 'secondary' : 'darkgreen'" :aria-busy="busy" :disabled="!isValidRequestBody(shortcut.params.body) || busy" @click="busyWhile(() => triggerShortcut(shortcut).then(res => $dispatch('open-response-modal', res)))">Trigger</button>
 
               <!-- Duplicate -->
               <button @click="duplicateShortcut(shortcut)">Duplicate</button>
