@@ -235,7 +235,7 @@
       <br />
       <br />
       <div class="grid">
-        <button @click="initialize()">Reload</button>
+        <button x-data="debouncedButton" :class="busy && 'secondary'" :aria-busy="busy" :disabled="busy" x-html="busy ? '' : 'Reload'" @click="debounce(500, () => initialize())"></button>
         <button @click="openUserConfig()">Open</button>
       </div>
 

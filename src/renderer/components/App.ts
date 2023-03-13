@@ -283,9 +283,4 @@ function clone(obj: Object) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-// Wait for a bit
-function delay(ms: number) {
-  return new Promise(resolve =>
-    setTimeout(resolve, ms)
-  );
-}
+
