@@ -41,8 +41,9 @@ Assistant supports!
 
 * Automatically minimizes to the system tray.
 
-
 * Automatically save your configuration after changes.
+
+* Dark/light mode switch.
 
 ## Setup
 
@@ -104,7 +105,7 @@ npm start     # starts the app
 npm run make  # packages a binary/installer
 ```
 
-Please report any issue you might encounter while building the app and I will update this file accordignly.
+Please report any issue you might encounter while building the app and I will update this file accordingly.
 
 ## Contributing
 
