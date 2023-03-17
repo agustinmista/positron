@@ -91,7 +91,11 @@ details under the `Settings` page. You'll need:
 
 The easiest way to install this app is to grab one of the [precompiled releases](https://github.com/agustinmista/positron/releases).
 
-NOTE: the release binaries are **not signed**, so you might see Windows and macOS complaining about them.
+NOTE: the release binaries are **not signed**, so you might see Windows and macOS complaining about them. This is not going to change unless this app gets some traction, since both Microsoft and Apple charge you a fair amount of real money to let you become a trusted developer.
+
+  * On windows, if you see the `Windows protected your PC` popup, you can continue by clicking in `More info` and the `Run anyway`.
+
+  * On macOS, you might need to [allow apps from unidentified developers](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac).
 
 ### Build from source
 
