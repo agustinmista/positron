@@ -41,7 +41,6 @@ Assistant supports!
 
 * Automatically minimizes to the system tray.
 
-* Dark/light mode switch.
 
 * Automatically save your configuration after changes.
 
@@ -55,34 +54,34 @@ details under the `Settings` page. You'll need:
 
 ## Screenshots
 
-* Homepage
+### Homepage
 
 <div style="text-align: center">
-  <img src="assets/home.png"  width="75%" height="75%">
+  <img src="assets/home.png" width="75%" height="75%">
 </div>
 
-* Creating shortcuts
+### Creating shortcuts
 
 <div style="text-align: center">
-  <img src="assets/shortcut.png"  width="75%" height="75%">
+  <img src="assets/shortcut.png" width="75%" height="75%">
 </div>
 
-* Custom response handlers
+### Custom response handlers
 
 <div style="text-align: center">
-  <img src="assets/custom-notification.png"  width="75%" height="75%">
+  <img src="assets/custom-notification.png" width="75%" height="75%">
 </div>
 
-* Custom notifications
+### Custom notifications
 
 <div style="text-align: center">
-  <img src="assets/notification.png"  width="50%" height="50%">
+  <img src="assets/notification.png" width="50%" height="50%">
 </div>
 
-* Settings menu
+### Settings menu
 
 <div style="text-align: center">
-  <img src="assets/settings.png"  width="50%" height="50%">
+  <img src="assets/settings.png" width="50%" height="50%">
 </div>
 
 ## Install
@@ -95,7 +94,7 @@ NOTE: the release binaries are **not signed**, so you might see Windows and macO
 
 ### Build from source
 
-You can also build Positron by yourself. Assumming you have `git` and `npm` installed, this should should get you far:
+You can also build Positron by yourself. Assumming you have `git` and `npm` installed, this should get you far:
 
 ```
 git clone https://github.com/agustinmista/positron.git
