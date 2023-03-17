@@ -88,5 +88,5 @@ typings/
 # Electron-Forge
 out/
 
-example.sh
+# App config
 config.json
