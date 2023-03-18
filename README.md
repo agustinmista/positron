@@ -25,7 +25,7 @@ Assistant supports!
 
   + Send request data: some endpoints require JSON data to be sent in the request body. Positron lets you add this data using key/value pairs.
 
-* Custom notification handlers: if your request returns some useful data, you can write a custom response handler to get a system notification when the shortcut is triggered. This can be used to, for instance, get state of a sensor or read events.
+* Custom notification handlers: if your request returns some useful data, you can write a custom response handler to get a system notification when the shortcut is triggered. This can be used to, for instance, get the state of a sensor or read events.
 
   + To implement a custom notification handler, you simply need provide an anonymous function of type:
 
@@ -67,7 +67,7 @@ details under the `Settings` page. You'll need:
   <img src="assets/shortcut.png" width="75%" height="75%">
 </div>
 
-### Custom response handlers
+### Custom notification handlers
 
 <div style="text-align: center">
   <img src="assets/custom-notification.png" width="75%" height="75%">
@@ -113,7 +113,7 @@ Please report any issue you might encounter while building the app and I will up
 
 ## Contributing
 
-Feel free to [open an issue](https://github.com/agustinmista/positron/issues/new) if find a bug or if you'd like to see a new feature implemented.
+Feel free to [open an issue](https://github.com/agustinmista/positron/issues/new) if you find a bug or if you'd like to see a new feature implemented.
 
 PRs are welcomed too!
 
