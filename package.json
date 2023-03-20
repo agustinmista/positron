@@ -1,7 +1,7 @@
 {
   "name": "positron",
   "productName": "Positron",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Create keyboard shortcuts for Home Assistant actions",
   "main": ".webpack/main",
   "scripts": {
@@ -44,7 +44,6 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "file-loader": "^6.2.0",
-    "license-checker": "^25.0.1",
     "uuid": "^9.0.0"
   }
 }
