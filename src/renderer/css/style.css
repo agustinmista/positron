@@ -36,6 +36,7 @@ textarea {
   resize: vertical;
   font-family: monospace;
   overflow-y: hidden;
+  min-height: 3em;
 }
 
 /* Accents */
