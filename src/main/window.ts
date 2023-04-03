@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Notification } from "electron";
 import Store from 'electron-store';
 
 import { initIPCHandlers } from "./ipc";
@@ -28,10 +28,11 @@ const isDev: boolean = process.env.NODE_ENV === 'development';
 export var mainWindow: BrowserWindow;
 
 // Create the main window
-export function createMainWindow() {
+export function createMainWindow(hidden: boolean = false) {
 
   // Create a new browser window
   mainWindow = new BrowserWindow({
+    show: !hidden,
     icon: icon,
     height: 1000,
     width: isDev ? 1200 : 600,
@@ -61,6 +62,11 @@ export function createMainWindow() {
 
   // Create the tray icon
   createTrayIcon(mainWindow);
+
+  // Show a notification if we started in hidden mode
+  if (hidden) {
+    new Notification({ body: 'Started in the background', silent: true }).show();
+  }
 
   // Minimize to tray
   mainWindow.on('minimize', (event: Event) => {

@@ -1,6 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Notification} from 'electron';
 
-import { createMainWindow } from './window';
+import { createMainWindow, mainWindow } from './window';
 
 // ----------------------------------------
 // Packaging stuff
@@ -15,7 +15,8 @@ if (require('electron-squirrel-startup')) { app.quit(); }
 
 // Create a main window when Electron has finished initialization
 app.on('ready', (): void => {
-  createMainWindow();
+  const hidden = process.argv.includes('--hidden');
+  createMainWindow(hidden);
 });
 
 // Quit when all windows are closed, except on macOS

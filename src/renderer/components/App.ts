@@ -20,7 +20,8 @@ export interface UserConfig {
   server: HomeAssistantServer,
   shortcuts: [Shortcut],
   darkTheme: boolean,
-  autoSave: boolean
+  autoSave: boolean,
+  autoLaunch: boolean
 }
 
 
@@ -41,6 +42,7 @@ export default class App {
   // Other user preferences
   darkTheme: boolean
   autoSave: boolean
+  autoLaunch: boolean
 
   // App constructor
   constructor() {
@@ -53,6 +55,7 @@ export default class App {
     this.shortcuts = Array(0);
     this.darkTheme = true;
     this.autoSave = true;
+    this.autoLaunch = false;
   }
 
   // ----------------------------------------
@@ -236,7 +239,8 @@ export default class App {
       server: clone(this.server),
       shortcuts: clone(this.shortcuts),
       darkTheme: clone(this.darkTheme),
-      autoSave: clone(this.autoSave)
+      autoSave: clone(this.autoSave),
+      autoLaunch: clone(this.autoLaunch)
     });
   }
 
@@ -246,6 +250,7 @@ export default class App {
     this.server = config.server;
     this.shortcuts = config.shortcuts;
     this.darkTheme = config.darkTheme;
+    this.autoLaunch = config.autoLaunch;
   }
 
   // Open the config file using the OS editor
@@ -262,6 +267,13 @@ export default class App {
   toggleAutoSave = function (): void {
     this.autoSave = !this.autoSave;
   }
+
+  toggleAutoLaunch = function (): void {
+    this.autoLaunch = !this.autoLaunch;
+    window.api.setAutoLaunch(this.autoLaunch);
+  }
+
+  // Other utilities
 
   getAppVersion = async function (): Promise<string> {
     const version = await window.api.getAppVersion();
