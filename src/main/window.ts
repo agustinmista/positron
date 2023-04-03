@@ -1,4 +1,4 @@
-import { BrowserWindow, Notification } from "electron";
+import { BrowserWindow, Notification, app, dialog } from "electron";
 import Store from 'electron-store';
 
 import { initIPCHandlers } from "./ipc";
@@ -77,5 +77,20 @@ export function createMainWindow(hidden: boolean = false) {
   // Restore from tray
   mainWindow.on('restore', () => {
     mainWindow.show();
+  });
+
+  // Quit confirmation
+  mainWindow.on('close', async (event: Event) => {
+    event.preventDefault();
+    const choice = await dialog.showMessageBox(mainWindow, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Positron',
+      message: 'Are you sure you want to quit?'
+    });
+    if (choice.response === 0) {
+      mainWindow.destroy();
+      app.quit();
+    }
   });
 };
