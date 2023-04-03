@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Notification} from 'electron';
+import { app, BrowserWindow, Notification } from 'electron';
 
 import { createMainWindow, mainWindow } from './window';
 
@@ -8,6 +8,24 @@ import { createMainWindow, mainWindow } from './window';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 if (require('electron-squirrel-startup')) { app.quit(); }
+
+// ----------------------------------------
+// Single instance
+// ----------------------------------------
+
+// Quit this app instance if there's another instance already running
+if (!app.requestSingleInstanceLock()) { app.exit(); }
+
+// Someone tried to run a second instance, we should focus our window
+app.on('second-instance', () => {
+  new Notification({ body: 'Started in the background', silent: true }).show();
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore()
+    }
+    mainWindow.focus()
+  }
+})
 
 // ----------------------------------------
 // Event handlers
