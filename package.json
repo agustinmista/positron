@@ -1,7 +1,7 @@
 {
   "name": "positron",
   "productName": "Positron",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Create keyboard shortcuts for Home Assistant actions",
   "main": ".webpack/main",
   "scripts": {
