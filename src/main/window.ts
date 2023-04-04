@@ -94,3 +94,13 @@ export function createMainWindow(hidden: boolean = false) {
     }
   });
 };
+
+// Refocus the main window if minimized or out of focus
+export function refocusMainWindow() {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore()
+    }
+    mainWindow.focus()
+  }
+};

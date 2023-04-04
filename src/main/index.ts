@@ -1,6 +1,6 @@
-import { app, BrowserWindow, Notification } from 'electron';
+import { app, BrowserWindow } from 'electron';
 
-import { createMainWindow, mainWindow } from './window';
+import { createMainWindow, refocusMainWindow } from './window';
 
 // ----------------------------------------
 // Packaging stuff
@@ -18,13 +18,7 @@ if (!app.requestSingleInstanceLock()) { app.exit(); }
 
 // Someone tried to run a second instance, we should focus our window
 app.on('second-instance', () => {
-  new Notification({ body: 'Started in the background', silent: true }).show();
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore()
-    }
-    mainWindow.focus()
-  }
+  refocusMainWindow();
 })
 
 // ----------------------------------------
