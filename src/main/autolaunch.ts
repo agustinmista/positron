@@ -8,8 +8,8 @@ const autoLauncher = new AutoLaunch({
 // Enable or disable auto launch on startup
 export function setAutoLaunch(enable: boolean) {
   if (enable) {
-    autoLauncher.enable()
+    autoLauncher.enable();
   } else {
-    autoLauncher.disable()
+    autoLauncher.disable();
   }
 }
