@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Notification, app, dialog } from "electron";
 import Store from 'electron-store';
 
 import { initIPCHandlers } from "./ipc";
@@ -28,10 +28,11 @@ const isDev: boolean = process.env.NODE_ENV === 'development';
 export var mainWindow: BrowserWindow;
 
 // Create the main window
-export function createMainWindow() {
+export function createMainWindow(hidden: boolean = false) {
 
   // Create a new browser window
   mainWindow = new BrowserWindow({
+    show: !hidden,
     icon: icon,
     height: 1000,
     width: isDev ? 1200 : 600,
@@ -62,6 +63,11 @@ export function createMainWindow() {
   // Create the tray icon
   createTrayIcon(mainWindow);
 
+  // Show a notification if we started in hidden mode
+  if (hidden) {
+    new Notification({ body: 'Started in the background', silent: true }).show();
+  }
+
   // Minimize to tray
   mainWindow.on('minimize', (event: Event) => {
     event.preventDefault();
@@ -72,4 +78,29 @@ export function createMainWindow() {
   mainWindow.on('restore', () => {
     mainWindow.show();
   });
+
+  // Quit confirmation
+  mainWindow.on('close', async (event: Event) => {
+    event.preventDefault();
+    const choice = await dialog.showMessageBox(mainWindow, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Positron',
+      message: 'Are you sure you want to quit?'
+    });
+    if (choice.response === 0) {
+      mainWindow.destroy();
+      app.quit();
+    }
+  });
+};
+
+// Refocus the main window if minimized or out of focus
+export function refocusMainWindow() {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore()
+    }
+    mainWindow.focus()
+  }
 };

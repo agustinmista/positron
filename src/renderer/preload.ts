@@ -25,7 +25,9 @@ export const api = {
   getAppVersion: async () =>
     await ipcRenderer.invoke('api/getAppVersion'),
   openExternal: async (url: string) =>
-    await ipcRenderer.invoke('api/openExternal', url)
+    await ipcRenderer.invoke('api/openExternal', url),
+  setAutoLaunch: async (enable: boolean) =>
+    await ipcRenderer.invoke('api/setAutoLaunch', enable)
 };
 
 contextBridge.exposeInMainWorld('api', api);

@@ -185,57 +185,72 @@
         <span class="bigger">Settings</span>
       </header>
 
-      <!-- Server settings -->
-      <h4>Home Assistant server</h4>
+      <!-- General settings -->
+      <h4>General</h4>
 
-      <!-- Protocol/Host -->
-      <div class="grid-1-4">
-
-        <!-- Protocol -->
-        <div class="grid-1-4-1">
-          <label>Protocol</label>
-          <select x-model="server.protocol">
-            <option value="http">HTTP</option>
-            <option value="https">HTTPS</option>
-          </select>
-        </div>
-
-        <!-- Hostname -->
-        <div class="grid-1-4-2">
-          <label>Hostname</label>
-          <input type="text" x-model="server.hostname">
-        </div>
-      </div>
-
-      <!-- Port -->
-      <label>Port</label>
-      <input type="text" x-model="server.port">
-
-      <!-- TdidEnableen -->
-      <label>Long-lived access token</label>
-      <input type="text" x-model="server.token">
-
-      <!-- Appearence settings -->
-      <h4>Appearence</h4>
-
-      <label>
-        <input type="checkbox" role="switch" name="darkTheme" x-model="darkTheme" @click="toggleDarkTheme()">
-        Dark theme
-      </label>
-      <br />
-
-      <!-- User config file settings -->
-      <h4>Configuration file</h4>
-
+      <!-- Auto save -->
       <label>
         <input type="checkbox" role="switch" name="autoSave" x-model="autoSave" @click="toggleAutoSave()">
-        Auto save
+        Auto save configuration
       </label>
       <small>Runs on shortcut creation, deletion and toggle</small>
       <br />
       <br />
-      <div class="grid">
-        <button x-data="debouncedButton" :class="busy && 'secondary'" :aria-busy="busy" :disabled="busy" x-html="busy ? '' : 'Reload'" @click="debounce(500, () => initialize())"></button>
+
+      <!-- Auto launch -->
+      <label>
+        <input type="checkbox" role="switch" name="autoLaunch" x-model="autoLaunch" @click="toggleAutoLaunch()">
+        Auto launch on startup
+      </label>
+      <small>Starts minimized to tray</small>
+      <br />
+      <br />
+
+      <!-- Dark theme -->
+      <label>
+        <input type="checkbox" role="switch" name="darkTheme" x-model="darkTheme" @click="toggleDarkTheme()">
+        Dark theme
+      </label>
+      <small x-text="darkTheme ? 'Welcome to the dark side' : 'I like my retinas al dente'">Starts minimized to tray</small>
+      <br />
+      <br />
+
+      <!-- Server settings -->
+      <h4>Home Assistant server</h4>
+
+        <!-- Protocol/Host -->
+        <div class="grid-1-4">
+
+          <!-- Protocol -->
+          <div class="grid-1-4-1">
+            <label>Protocol</label>
+            <select x-model="server.protocol">
+              <option value="http">HTTP</option>
+              <option value="https">HTTPS</option>
+            </select>
+          </div>
+
+          <!-- Hostname -->
+          <div class="grid-1-4-2">
+            <label>Hostname</label>
+            <input type="text" x-model="server.hostname">
+          </div>
+        </div>
+
+        <!-- Port -->
+        <label>Port</label>
+        <input type="text" x-model="server.port">
+
+        <!-- Token -->
+        <label>Long-lived access token</label>
+        <input type="text" x-model="server.token">
+        <br />
+        <br />
+
+        <!-- User config file settings -->
+        <h4>Configuration file</h4>
+        <div class="grid">
+          <button x-data="debouncedButton" :class="busy && 'secondary'" :aria-busy="busy" :disabled="busy" x-html="busy ? '' : 'Reload'" @click="debounce(500, () => initialize())"></button>
         <button @click="openUserConfig()">Open</button>
       </div>
 

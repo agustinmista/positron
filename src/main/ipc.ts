@@ -3,6 +3,7 @@ import Store from 'electron-store';
 import vm from 'vm';
 
 import { homeAssistantRequest, type HomeAssistantRequestParams, type HomeAssistantResponse, type HomeAssistantServer } from "../lib/homeAssistant";
+import { setAutoLaunch } from "./autolaunch";
 
 // ----------------------------------------
 // IPC backend implementation
@@ -65,6 +66,11 @@ export function initIPCHandlers(store: Store) {
     return shell.openExternal(url);
   });
 
+  ipcMain.handle('api/setAutoLaunch', (_event, enabled) => {
+    console.log(`HANDLING api/setAutoLaunch (${enabled})`);
+    return setAutoLaunch(enabled);
+  });
+
 }
 
 // ----------------------------------------
@@ -111,7 +117,7 @@ function runResponseHandler(handler: string, response: HomeAssistantResponse): s
 // Send a new notification
 function sendNotification(message: string): void {
   console.log(`SENDING NOTIFICATION: ${message}`);
-  new Notification({ body: message }).show();
+  new Notification({ body: message, silent: true }).show();
 }
 
 // Run a custom function string in an isolated context

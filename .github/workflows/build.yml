@@ -36,6 +36,16 @@ jobs:
       - name: Make (macOS)
         run: npm run make -- --platform darwin
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            out/make/deb/x64/*.deb
+            out/make/rpm/x64/*.rpm
+            out/make/squirrel.windows/x64/*.exe
+            out/make/zip/darwin/x64/*.zip
+
       - name: Create a release for new tags
         if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1
