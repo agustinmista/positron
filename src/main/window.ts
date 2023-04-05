@@ -65,7 +65,7 @@ export function createMainWindow(hidden: boolean = false) {
 
   // Show a notification if we started in hidden mode
   if (hidden) {
-    new Notification({ body: 'Started in the background', silent: true }).show();
+    new Notification({ body: 'Positron started in the background', silent: true }).show();
   }
 
   // Minimize to tray
