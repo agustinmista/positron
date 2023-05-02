@@ -4,11 +4,9 @@
   <h3>Create keyboard shortcuts for Home Assistant actions</h3>
 </div>
 
----
-
-Positron let's you associate global system shortcuts to requests to a [Home
+Positron lets you associate global system shortcuts to requests to a [Home
 Assistant](https://www.home-assistant.io/) server. You can use this to toggle
-ligths, enable scenes, run scripts, read sensors, and pretty much anything Home
+lights, enable scenes, run scripts, read sensors, and pretty much anything Home
 Assistant supports!
 
 
@@ -34,15 +32,15 @@ Assistant supports!
   shortcut is triggered. This can be used to, for instance, get the state of a
   sensor or read events.
 
-  + To implement a custom notification handler, you simply need provide an
+  + To implement a custom notification handler, you simply need to provide an
     anonymous function of type:
 
     `{ ok: boolean, body: string } => string`
 
-    The `ok` field indicates if the requests was successful, and `body` contains
+    The `ok` field indicates if the request was successful, and `body` contains
     the raw data that the Home Assistant server replied with or an error
-    message. The return value of this function should be content of the body of
-    your custom notification. For instance, the default custom notification
+    message. The return value of this function should be the content of the body
+    of your custom notification. For instance, the default custom notification
     handler is:
 
     `res => res.ok ? 'Ok' : res.body`
@@ -55,7 +53,7 @@ Assistant supports!
 * Manually trigger the request and see the response. Useful for debugging custom
   notification handlers.
 
-* Automatically minimizes to the system tray.
+* Automatically minimizes itself to the system tray.
 
 * Automatically save your configuration after changes.
 
@@ -63,10 +61,10 @@ Assistant supports!
 
 ## Setup
 
-After you first launch this app, you can setup your Home Assistant server
+After you first launch this app, you can set up your Home Assistant server
 details under the `Settings` page. You'll need:
 
-* A Home Assistant server URL (http/https, hostname, port)
+* A Home Assistant server URL (HTTP/HTTPS, hostname, port)
 * A [long-lived access
   token](https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token)
 
@@ -114,15 +112,15 @@ macOS complaining about them. This is not going to change unless this app gets
 some traction, since both Microsoft and Apple charge you a fair amount of real
 money to let you become a trusted developer.
 
-  * On windows, if you see the `Windows protected your PC` popup, you can
-    continue by clicking in `More info` and the `Run anyway`.
+  * On Windows, if you see the `Windows protected your PC` popup, you can
+    continue by clicking on `More info` and then `Run anyway`.
 
   * On macOS, you might need to [allow apps from unidentified
     developers](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac).
 
 ### Build from source
 
-You can also build Positron by yourself. Assumming you have `git` and `npm`
+You can also build Positron by yourself. Assuming you have `git` and `npm`
 installed, this should get you far:
 
 ```
