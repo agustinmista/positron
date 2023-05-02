@@ -71,6 +71,12 @@ textarea {
   width: 5em;
 }
 
+/* No dotted underline in tooltips */
+
+[data-tooltip] {
+  border-bottom: none !important;
+}
+
 /* Minimal 1/4 grid */
 
 .grid-1-4 {

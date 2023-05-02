@@ -65,7 +65,11 @@
 
               <!-- Accelerator -->
               <div>
-                <label>Accelerator</label>
+                <label>Accelerator
+                  <span data-tooltip="Get more info" @click="openExternal('https://www.electronjs.org/docs/latest/api/accelerator')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256,56C145.72,56,56,145.72,56,256s89.72,200,200,200,200-89.72,200-200S366.28,56,256,56Zm0,82a26,26,0,1,1-26,26A26,26,0,0,1,256,138Zm64,226H200V332h44V244H212V212h64V332h44Z"/></svg>
+                  </span>
+                </label>
                 <input type="text" x-model="shortcut.acc" :disabled="shortcut.enabled" :aria-invalid="!status" @input="status=true">
                 <small x-show="!status">Accelerator is invalid or already in use</small>
               </div>
@@ -85,7 +89,11 @@
 
               <!-- Endpoint -->
               <div class="grid-1-4-2">
-                <label>Endpoint</label>
+                <label>Endpoint
+                  <span data-tooltip="Get more info" @click="openExternal('https://developers.home-assistant.io/docs/api/rest')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256,56C145.72,56,56,145.72,56,256s89.72,200,200,200,200-89.72,200-200S366.28,56,256,56Zm0,82a26,26,0,1,1-26,26A26,26,0,0,1,256,138Zm64,226H200V332h44V244H212V212h64V332h44Z"/></svg>
+                  </span>
+                </label>
                 <input type="text" x-model="shortcut.params.endpoint" :disabled="shortcut.enabled">
               </div>
             </div>
@@ -242,7 +250,11 @@
         <input type="text" x-model="server.port">
 
         <!-- Token -->
-        <label>Long-lived access token</label>
+        <label>Long-lived access token
+          <span data-tooltip="Get more info" @click="openExternal('https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256,56C145.72,56,56,145.72,56,256s89.72,200,200,200,200-89.72,200-200S366.28,56,256,56Zm0,82a26,26,0,1,1-26,26A26,26,0,0,1,256,138Zm64,226H200V332h44V244H212V212h64V332h44Z"/></svg>
+          </span>
+        </label>
         <input type="text" x-model="server.token">
         <br />
         <br />
