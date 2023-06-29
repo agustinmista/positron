@@ -68,6 +68,19 @@ details under the `Settings` page. You'll need:
 * A [long-lived access
   token](https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token)
 
+## Disclaimer for Wayland users
+Positron isn't a native Wayland app and as such it will run under XWayland.
+
+By design XWayland applications can't see inputs (such as keyboard shortcuts) performed in native Wayland apps. This means that shortcuts you configured in Positron will only work in other XWayland applications. This isn't something we have any control over.
+
+Possible workarounds include:
+- running X instead of Wayland
+- configuring global shortcuts (e.g. in KDE you can define custom shortcuts, which will work in all applications. To do that open Settings and find shortcuts page, click `Add Command` and paste something like this:
+```
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"entity_id": "<entity>"}' <url>:<port>/api/services/<domain>/<service>
+```
+More  information about creating API requests can be found in [official docs](https://developers.home-assistant.io/docs/api/rest/)
+
 ## Screenshots
 
 ### Homepage
