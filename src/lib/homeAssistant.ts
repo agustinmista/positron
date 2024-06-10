@@ -1,4 +1,4 @@
-import request from 'electron-request';
+import axios from 'axios';
 
 // ----------------------------------------
 // Interfaces
@@ -54,20 +54,21 @@ export const homeAssistantRequest = async (
   // Perform the request
   try {
 
-    const response = await request(url, {
+    const response = await axios({
+      url: url,
       method: params.method,
       headers: {
         'Authorization': `Bearer ${server.token}`,
         'Content-Type': 'application/json'
       },
-      body: body
+      data: body
     });
 
     // Parse the response body as an object
-    const responseBody = await response.text();
+    const responseBody = await response.data;
 
     // Return ok!
-    return { ok: response.ok, body: responseBody };
+    return { ok: response.status == 200, body: responseBody };
 
   } catch (error) {
 
