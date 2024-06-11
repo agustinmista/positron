@@ -1,0 +1,5 @@
+{
+	"name": "Ubuntu",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"postCreateCommand": "./scripts/setup.sh"
+}
