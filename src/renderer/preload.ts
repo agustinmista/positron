@@ -18,8 +18,8 @@ export const api = {
     await ipcRenderer.invoke('api/isShortcutRegistered', acc),
   saveUserConfig: async (config: UserConfig) =>
     await ipcRenderer.invoke('api/saveUserConfig', config),
-  loadUserConfig: async () =>
-    await ipcRenderer.invoke('api/loadUserConfig'),
+  loadUserConfig: async (fallback: UserConfig) =>
+    await ipcRenderer.invoke('api/loadUserConfig', fallback),
   openUserConfig: async () =>
     await ipcRenderer.invoke('api/openUserConfig'),
   getAppVersion: async () =>

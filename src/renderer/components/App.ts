@@ -18,12 +18,24 @@ export interface Shortcut {
 // User configuration (saved to disk)
 export interface UserConfig {
   server: HomeAssistantServer,
-  shortcuts: [Shortcut],
+  shortcuts: Shortcut[],
   darkTheme: boolean,
   autoSave: boolean,
   autoLaunch: boolean
 }
 
+const emptyConfig: UserConfig = {
+  server: {
+    protocol: "http",
+    hostname: "localhost",
+    port: 8123,
+    token: "<token>"
+  },
+  shortcuts: [],
+  darkTheme: true,
+  autoSave: true,
+  autoLaunch: true
+}
 
 // ----------------------------------------
 // The main App component class
@@ -246,7 +258,7 @@ export default class App {
 
   // Load the user config from the config file
   loadUserConfig = async function (): Promise<void> {
-    const config: UserConfig = await window.api.loadUserConfig();
+    const config: UserConfig = await window.api.loadUserConfig(emptyConfig);
     this.server = config.server;
     this.shortcuts = config.shortcuts;
     this.darkTheme = config.darkTheme;

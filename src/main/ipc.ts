@@ -46,9 +46,9 @@ export function initIPCHandlers(store: Store) {
     store.set('config', config);
   });
 
-  ipcMain.handle('api/loadUserConfig', (_event) => {
+  ipcMain.handle('api/loadUserConfig', (_event, fallback) => {
     console.log('HANDLING api/loadUserConfig');
-    return store.get('config');
+    return store.get('config', fallback);
   });
 
   ipcMain.handle('api/openUserConfig', (_event) => {
