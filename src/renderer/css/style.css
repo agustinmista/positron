@@ -18,8 +18,14 @@ body nav {
   position: fixed;
   top: 0px;
   z-index: 10;
-  background-color: var(--card-background-color);
-  box-shadow: var(--card-box-shadow);
+  background-color: var(--pico-card-background-color);
+  box-shadow: var(--pico-card-box-shadow);
+}
+
+/* Small gap between nav and content */
+
+body div.container-fluid {
+  margin-top: 4em;
 }
 
 /* Smaller margins on shortcut cards */
@@ -28,6 +34,12 @@ details {
   border-bottom: none;
   margin-bottom: 0px;
   padding-bottom: 0px;
+}
+
+/* Full-width buttons */
+
+button {
+  width: 100%;
 }
 
 /* Code area */
